@@ -1,0 +1,11 @@
+{
+  "name": "authentications",
+  "version": "1.0.0",
+  "description": "authentication will all here",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "M-adeelnasir",
+  "license": "ISC"
+}
