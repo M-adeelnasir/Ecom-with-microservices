@@ -4,12 +4,14 @@
   "description": "authentication will all here",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.ts",
+    "dev": "nodemon --config nodemon.json src/index.ts"
   },
   "author": "M-adeelnasir",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.7.23",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   }
 }
