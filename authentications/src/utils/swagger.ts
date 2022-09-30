@@ -1,0 +1,49 @@
+import { Request, Express, Response } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+
+import { log } from './logger';
+import config from 'config';
+
+const HOST = config.get<string>('host');
+
+const options: swaggerJsDoc.Options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Authentication Swagger API Documentation',
+      version: '1.0.0',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  },
+  apis: ['./src/routes.ts', './src/schema/*.ts'],
+};
+
+const openapiSpecification = swaggerJsDoc(options);
+
+function swaggerDocs(app: Express, PORT: number) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
+  app.get('/docs.json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(openapiSpecification);
+  });
+  log.info(
+    `Authentication API Docs are available at http://${HOST}:${PORT}/api-docs`
+  );
+}
+
+export default swaggerDocs;
