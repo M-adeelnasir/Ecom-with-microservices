@@ -3,7 +3,6 @@ import Routes from '../routes';
 import morgan from 'morgan';
 import cors from 'cors';
 import config from 'config';
-import swaggerDocs from './swagger';
 
 const app = express();
 const NODE_ENV = config.get<string>('node_env');

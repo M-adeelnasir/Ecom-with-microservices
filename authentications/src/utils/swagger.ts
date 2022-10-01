@@ -36,7 +36,7 @@ const openapiSpecification = swaggerJsDoc(options);
 
 function swaggerDocs(app: Express) {
   app.use(
-    '/api/v1/users/api-docs',
+    '/api/v1/users/auth-api-docs',
     swaggerUi.serve,
     swaggerUi.setup(openapiSpecification)
   );
@@ -46,7 +46,7 @@ function swaggerDocs(app: Express) {
     res.send(openapiSpecification);
   });
   log.info(
-    `Authentication API Docs are available at http://${HOST}/api/v1/users/api-docs`
+    `Authentication API Docs are available at " http://${HOST}/api/v1/users/auth-api-docs "`
   );
 }
 

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { log } from './logger';
 
-const connectDb = async () => {
+const connectDB = async () => {
   if (!process.env.MONGO_URI) {
     throw new Error('MONGO URI must be defined');
   }
@@ -10,4 +10,4 @@ const connectDb = async () => {
   log.info(`Authentication DB is conneted with ${conn.connection.host}`);
 };
 
-export default connectDb;
+export default connectDB;
