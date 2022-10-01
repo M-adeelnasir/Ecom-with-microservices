@@ -15,7 +15,8 @@ const server = app.listen(PORT, async () => {
   swaggerDocs(app);
 });
 
-process.on('unhandledRejection', (err: Error) => {
+process.on('unhandledRejection', (err: any) => {
+  console.log(err);
   console.log('SERVER ERROR ===>' + err);
   server.close(process.exit(1));
 });

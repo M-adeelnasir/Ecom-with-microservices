@@ -17,7 +17,7 @@ export default function (plop) {
             templateFile: 'templates/model.template.hbs'
         }, {
             type: 'add',
-            path: 'src/contoller/{{snakeCase name}}.controller.ts',
+            path: 'src/controller/{{snakeCase name}}.controller.ts',
             templateFile: 'templates/controller.template.hbs'
         }]
     });

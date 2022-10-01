@@ -1,6 +1,6 @@
 import { object, ref, string } from 'yup';
 
-const emailRegex =
+export const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const passwordRegex =
@@ -11,7 +11,9 @@ const passwordRegexError =
 
 let createUserSchema = object({
   body: object({
-    name: string().required('Name is required').min(4, 'Name is too short'),
+    firstName: string()
+      .required('Name is required')
+      .min(4, 'Name is too short'),
     lastName: string().notRequired().min(3, 'Name is too short'),
     email: string()
       .required('Email is required')
