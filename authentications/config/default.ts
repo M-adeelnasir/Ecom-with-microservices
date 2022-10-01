@@ -1,4 +1,6 @@
 export default {
   port: 3000,
-  host: 'localhost',
+  host: 'shopproduct.dev',
+  node_env: 'development',
+  dev: 'localhost',
 };

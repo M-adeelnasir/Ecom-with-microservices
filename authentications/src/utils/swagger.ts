@@ -34,15 +34,19 @@ const options: swaggerJsDoc.Options = {
 
 const openapiSpecification = swaggerJsDoc(options);
 
-function swaggerDocs(app: Express, PORT: number) {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+function swaggerDocs(app: Express) {
+  app.use(
+    '/api/v1/users/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(openapiSpecification)
+  );
 
   app.get('/docs.json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(openapiSpecification);
   });
   log.info(
-    `Authentication API Docs are available at http://${HOST}:${PORT}/api-docs`
+    `Authentication API Docs are available at http://${HOST}/api/v1/users/api-docs`
   );
 }
 

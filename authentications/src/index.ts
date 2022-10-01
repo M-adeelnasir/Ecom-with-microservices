@@ -9,8 +9,10 @@ const HOST = config.get<string>('host');
 
 const server = app.listen(PORT, async () => {
   await connectDb();
-  log.info(`Authentication server is listening on port http://${HOST}:${PORT}`);
-  swaggerDocs(app, PORT);
+  log.info(
+    `Authentication server is listening on port http://${HOST}/api/v1/users`
+  );
+  swaggerDocs(app);
 });
 
 process.on('unhandledRejection', (err: Error) => {
