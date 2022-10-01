@@ -1,6 +1,18 @@
 import mongoose from 'mongoose';
 import { emailRegex } from '../schemas/create-user.schema';
-export interface UserDocument extends mongoose.Document {}
+import bcrypt from 'bcrypt';
+export interface UserDocument extends mongoose.Document {
+  firstName: string;
+  lastName?: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  verified: boolean;
+  avatar?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  comparePassword(enteredPassword: string): Promise<Boolean>;
+}
 
 const userSchema = new mongoose.Schema(
   {
@@ -33,7 +45,7 @@ const userSchema = new mongoose.Schema(
       min: [8, 'password must conatain atleast 8 charcters'],
       trim: true,
     },
-    verifed: {
+    verified: {
       type: Boolean,
       default: false,
     },
@@ -43,6 +55,27 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.pre('save', async function (next) {
+  const user = this as UserDocument;
+  if (!user.isModified('password')) return next();
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = bcrypt.hashSync(user.password, salt);
+
+  user.password = hash;
+  user.confirmPassword = hash;
+  return next();
+});
+
+userSchema.methods.comparePassword = async function (
+  enteredPassword: string
+): Promise<Boolean> {
+  const user = this as UserDocument;
+  return bcrypt
+    .compare(enteredPassword, user.password)
+    .catch((err: any) => false);
+};
 
 const User = mongoose.model<UserDocument>('User', userSchema);
 
