@@ -53,7 +53,16 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.__v;
+        delete ret.password;
+        delete ret.confirmPassword;
+      },
+    },
+  }
 );
 
 userSchema.pre('save', async function (next) {
