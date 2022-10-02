@@ -1,13 +1,13 @@
 import { Response, Request } from 'express';
 import { signupUser } from '../services/user.service';
 import { omit } from 'lodash';
-import { NotFoundError } from '../errors/NotFound.error';
+import { BadRequestError } from '../errors/badRequest.error';
 
 export const createUserHandler = async (req: Request, res: Response) => {
   const user = await signupUser(req.body);
 
   if (!user) {
-    throw new NotFoundError();
+    throw new BadRequestError('Email is already reserved');
   }
 
   res.status(201).json({

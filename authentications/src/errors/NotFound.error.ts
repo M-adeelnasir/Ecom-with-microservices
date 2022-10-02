@@ -4,7 +4,7 @@ import { BaseError } from './base.error';
 export class NotFoundError extends BaseError {
   statusCode = HttpStatusCodes.NOT_FOUND;
   constructor() {
-    super();
+    super('Not Found Error');
   }
   serializeError() {
     return [
