@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import 'express-async-errors';
 import cors from 'cors';
 import config from 'config';
-import { NotFoundError } from '../errors/NotFound.error';
 import { errorResponse } from '../middlewares/errorResponse';
 
 const app = express();
@@ -20,7 +19,7 @@ if (NODE_ENV === 'development') {
 Routes(app);
 app.use(errorResponse);
 app.all('*', async (req, res) => {
-  throw new NotFoundError();
+  res.status(404).send('Invalid Request');
 });
 
 export { app };
