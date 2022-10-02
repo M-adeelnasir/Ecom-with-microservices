@@ -1,18 +1,26 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import Routes from '../routes';
 import morgan from 'morgan';
+import 'express-async-errors';
 import cors from 'cors';
 import config from 'config';
+import { NotFoundError } from '../errors/NotFound.error';
+import { errorResponse } from '../middlewares/errorResponse';
 
 const app = express();
-const NODE_ENV = config.get<string>('node_env');
+
 app.use(cors());
 app.use(express.json());
 
-if (NODE_ENV) {
+const NODE_ENV = config.get<string>('node_env');
+if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 Routes(app);
+app.use(errorResponse);
+app.all('*', async (req, res) => {
+  throw new NotFoundError();
+});
 
 export { app };
