@@ -41,7 +41,7 @@ function swaggerDocs(app: Express) {
     swaggerUi.setup(openapiSpecification)
   );
 
-  app.get('/docs.json', (req: Request, res: Response) => {
+  app.get('/api/v1/users/docs.json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(openapiSpecification);
   });

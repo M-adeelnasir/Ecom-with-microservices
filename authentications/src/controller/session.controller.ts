@@ -1,16 +1,18 @@
 import { Response, Request } from 'express';
-import { get } from 'lodash';
-import {log} from '../utils/logger'
+import { findUserByEmail } from '../services/session.service';
+import { BadRequestError } from '../errors/badRequest.error';
+import { createSession } from '../services/session.service';
 
-
-export const exmapleHandler = async (req: Request, res: Response) => {
-try {
-//handle logic
-
-} catch (err: any) {
-//hanlde errors
-log.error(err)
-throw new Error(err)
-}
-
-}
+export const sessionCreateleHandler = async (req: Request, res: Response) => {
+  //validate user if exits
+  const { email, password } = req.body;
+  const user = await findUserByEmail(email);
+  //comparing passwords
+  const isMatch = await user.comparePassword(password);
+  if (!isMatch) {
+    throw new BadRequestError('Invalid Credentials');
+  }
+  //create login session
+  const session = await createSession(user._id, req.get('user-agent') || '');
+  res.send(session);
+};

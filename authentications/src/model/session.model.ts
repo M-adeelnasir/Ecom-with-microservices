@@ -20,7 +20,7 @@ const sessionSchema = new mongoose.Schema(
     },
     valid: {
       type: Boolean,
-      deafult: true,
+      default: true,
     },
   },
   {
