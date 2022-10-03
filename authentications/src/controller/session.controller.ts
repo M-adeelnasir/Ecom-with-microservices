@@ -14,5 +14,5 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
   }
   //create login session
   const session = await createSession(user._id, req.get('user-agent') || '');
-  res.send(session);
+  res.status(201).send(session);
 };

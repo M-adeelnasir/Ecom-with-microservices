@@ -8,7 +8,7 @@
     "dev": "nodemon --config nodemon.json src/index.ts",
     "gen": "plop",
     "build": "tsc",
-    "test": "jest --watchAll --no-cache",
+    "test": "jest --watchAll --no-cache --detectOpenHandles",
     "clean": "del-cli ./build/*"
   },
   "author": "M-adeelnasir",
