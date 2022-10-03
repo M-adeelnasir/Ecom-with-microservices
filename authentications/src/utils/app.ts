@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import Routes from '../routes';
 import morgan from 'morgan';
 import 'express-async-errors';
@@ -11,10 +11,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const NODE_ENV = config.get<string>('node_env');
-if (NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+// const NODE_ENV = config.get<string>('node_env');
+// if (NODE_ENV === 'development') {
+// }
+
+app.use(morgan('dev'));
 
 Routes(app);
 app.use(errorResponse);

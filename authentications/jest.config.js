@@ -5,5 +5,8 @@ module.exports = {
   verbose: true,
   testMatch: ['**/**/*.test.ts'],
   forceExit: true,
+  setupFilesAfterEnv: [
+    "./src/test/setup.ts"
+  ]
   // clearMocks:true
 };
