@@ -1,12 +1,11 @@
 import { object, ref, string } from 'yup';
-
 export const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const passwordRegex =
+export const passwordRegex =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
-const passwordRegexError =
+export const passwordRegexError =
   'Password must have Minimum eight, at least one uppercase letter, one lowercase letter, one number and one special character';
 
 let createUserSchema = object({

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AnySchema } from 'yup';
+import { BadRequestError } from '../errors/badRequest.error';
 
 export const validateRequest =
   (Schema: AnySchema) =>
@@ -12,8 +13,6 @@ export const validateRequest =
       });
       return next();
     } catch (err: any) {
-      res.status(400).json({
-        errors: err.errors,
-      });
+      throw new BadRequestError(err.message);
     }
   };

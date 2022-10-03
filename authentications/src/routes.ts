@@ -3,6 +3,7 @@ import { createUserHandler } from './controller/user.controller';
 import { validateRequest } from './middlewares/validateRequest';
 import { createUserSchema } from './schemas/create-user.schema';
 import { sessionCreateleHandler } from './controller/session.controller';
+import { sessionCreate } from './schemas/session-create.scehma';
 
 const baseURI = '/api/v1/users';
 
@@ -83,5 +84,9 @@ export default function (app: Express) {
     validateRequest(createUserSchema),
     createUserHandler
   );
-  app.post(baseURI + '/signin', sessionCreateleHandler);
+  app.post(
+    baseURI + '/signin',
+    validateRequest(sessionCreate),
+    sessionCreateleHandler
+  );
 }
