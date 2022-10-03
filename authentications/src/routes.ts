@@ -84,6 +84,57 @@ export default function (app: Express) {
     validateRequest(createUserSchema),
     createUserHandler
   );
+
+  /**
+   * @openapi
+   * /api/v1/users/signin:
+   *  post:
+   *     tags:
+   *       - User Signin
+   *     summary: Create User Login Session
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - firstName
+   *               - email
+   *               - password
+   *               - confirmPassword
+   *             properties:
+   *               email:
+   *                   type: string
+   *                   default: example@gmail.com
+   *               password:
+   *                   type: string
+   *                   default: strong!Passsword123
+   *     responses:
+   *        '200':
+   *          description: Success
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  _id:
+   *                      type: string
+   *                  user:
+   *                      type: string
+   *                  userAgent:
+   *                      type: string
+   *                  valid:
+   *                      type: boolean
+   *                  createdAt:
+   *                      type: string
+   *                  updateAt:
+   *                      type: string
+   *        '400':
+   *          description: Bad Request
+   *        '409':
+   *          description: Conflict
+   */
+
   app.post(
     baseURI + '/signin',
     validateRequest(sessionCreate),
