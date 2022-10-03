@@ -18,8 +18,8 @@ if (NODE_ENV === 'development') {
 
 Routes(app);
 app.use(errorResponse);
-app.all('*', async (req, res) => {
-  res.status(404).send('Invalid Request');
-});
+// app.all('*', async (req, res) => {
+//   res.status(404).send('Invalid Request');
+// });
 
 export { app };

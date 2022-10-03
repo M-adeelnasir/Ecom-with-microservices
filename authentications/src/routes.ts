@@ -21,6 +21,62 @@ export default function (app: Express) {
     res.sendStatus(200);
   });
 
+  /**
+   * @openapi
+   * /api/v1/users/signup:
+   *  post:
+   *     tags:
+   *       - User Signup
+   *     summary: Adds a new user
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - firstName
+   *               - email
+   *               - password
+   *               - confirmPassword
+   *             properties:
+   *               firstName:
+   *                   type: string
+   *                   default: adeel
+   *               email:
+   *                   type: string
+   *                   default: example@gmail.com
+   *               password:
+   *                   type: string
+   *                   default: strong!Passsword123
+   *               confirmPassword:
+   *                   type: string
+   *                   default: strong!Password123
+   *     responses:
+   *        '200':
+   *          description: Success
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  _id:
+   *                      type: string
+   *                  name:
+   *                      type: string
+   *                  email:
+   *                      type: string
+   *                  verfied:
+   *                      type: boolean
+   *                  createdAt:
+   *                      type: string
+   *                  updateAt:
+   *                      type: string
+   *        '400':
+   *          description: Bad Request
+   *        '409':
+   *          description: Conflict
+   */
+
   app.post(
     baseURI + '/signup',
     validateRequest(createUserSchema),
