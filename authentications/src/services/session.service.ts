@@ -1,4 +1,4 @@
-import mongoose, { FilterQuery } from 'mongoose';
+import mongoose, { FilterQuery, QueryOptions } from 'mongoose';
 import { UserDocument } from '../model/user.model';
 import { User } from '../model/user.model';
 import { BadRequestError } from '../errors/badRequest.error';
@@ -12,6 +12,7 @@ export const findUserByEmail = async (
   if (!user) {
     throw new BadRequestError('Invalid Creadentials');
   }
+
   return user;
 };
 

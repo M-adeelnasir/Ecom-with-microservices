@@ -12,4 +12,5 @@ export const errorResponse = (
   }
 
   res.status(500).send('something went wrong');
+  console.log(err);
 };

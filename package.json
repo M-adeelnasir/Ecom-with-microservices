@@ -1,5 +1,0 @@
-{
-  "devDependencies": {
-    "mongodb-memory-server": "^8.9.3"
-  }
-}

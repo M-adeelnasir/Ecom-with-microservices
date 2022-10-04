@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // const NODE_ENV = config.get<string>('node_env');
+
 // if (NODE_ENV === 'development') {
 // }
 
