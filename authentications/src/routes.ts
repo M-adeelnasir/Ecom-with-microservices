@@ -6,7 +6,7 @@ import {
   sessionCreateleHandler,
   getAllSessionOfUserHanlder,
 } from './controller/session.controller';
-import { sessionCreate } from './schemas/session-create.scehma';
+import { sessionCreate, userSessions } from './schemas/session-create.scehma';
 
 const baseURI = '/api/v1/users';
 
@@ -150,5 +150,39 @@ export default function (app: Express) {
     sessionCreateleHandler
   );
 
-  app.get(baseURI + '/sessions', getAllSessionOfUserHanlder);
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/sessions:
+   *     post:
+   *      tags:
+   *        - User Sessions
+   *      summary: Get all currently login sessions of a user
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              required:
+   *                - userId
+   *              properties:
+   *                userId:
+   *                    type: string
+   *                    default: UserId
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
+
+  app.post(
+    baseURI + '/sessions',
+    validateRequest(userSessions),
+    getAllSessionOfUserHanlder
+  );
 }

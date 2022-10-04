@@ -124,7 +124,7 @@ describe('User', () => {
       });
       const userId = res.body.session.user;
       await request(app)
-        .get(USER_SESSION)
+        .post(USER_SESSION)
         .send({
           userId,
         })

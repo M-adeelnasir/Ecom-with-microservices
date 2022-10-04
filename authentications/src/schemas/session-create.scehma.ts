@@ -15,3 +15,9 @@ export const sessionCreate = object({
       .matches(passwordRegex, passwordRegexError),
   }),
 });
+
+export const userSessions = object({
+  body: object({
+    userId: string().required('User Id is required'),
+  }),
+});
