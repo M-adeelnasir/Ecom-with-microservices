@@ -12,7 +12,6 @@ export const findUserByEmail = async (
   if (!user) {
     throw new BadRequestError('Invalid Creadentials');
   }
-
   return user;
 };
 
@@ -26,6 +25,5 @@ export const getAllSessionsOfUser = async (
   userId: FilterQuery<SessionDocument['user']>
 ) => {
   const sessions = await Session.find({ user: userId, valid: true });
-
   return sessions;
 };

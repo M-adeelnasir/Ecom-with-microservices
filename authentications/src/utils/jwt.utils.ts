@@ -35,6 +35,5 @@ export const jwtRefreshTokenSign = (
       expiresIn,
     }
   );
-
   return token;
 };

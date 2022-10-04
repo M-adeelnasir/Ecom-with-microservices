@@ -3,6 +3,7 @@ import request from 'supertest';
 
 const SIGNIN_URI = '/api/v1/users/signin';
 const SIGNUP_URI = '/api/v1/users/signup';
+const USER_SESSION = '/api/v1/users/sessions';
 
 describe('User', () => {
   describe('User login Session', () => {
@@ -105,6 +106,29 @@ describe('User', () => {
         .then((res) => {
           expect(res.body).toHaveProperty('refreshToken');
         });
+    });
+
+    it('should return 200 on getting all login sessions currently online', async () => {
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app).post(SIGNIN_URI).send({
+        email: 'exampl@gmail.com',
+        password: 'kjfj@SldkfW874!',
+      });
+      const userId = res.body.session.user;
+      await request(app)
+        .get(USER_SESSION)
+        .send({
+          userId,
+        })
+        .expect(200);
     });
   });
 });
