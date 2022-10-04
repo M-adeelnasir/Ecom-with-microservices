@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import { findUserByEmail } from '../services/session.service';
 import { BadRequestError } from '../errors/badRequest.error';
 import { createSession } from '../services/session.service';
-import { jwtSign } from '../utils/jwt.utils';
+import { jwtSign, jwtRefreshTokenSign } from '../utils/jwt.utils';
 import config from 'config';
 
 export const sessionCreateleHandler = async (req: Request, res: Response) => {
@@ -19,14 +19,28 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
   const session = await createSession(user._id, req.get('user-agent') || '');
 
   //create user jwt access token
-  const token = await jwtSign(
+  const accessToken = await jwtSign(
     user,
     session,
     config.get('jwt_access_token_expired')
   );
 
-  res.status(201).cookie('accessToken', token, { httpOnly: true }).json({
+  //create jwt refresh token
+  const refreshToken = await jwtRefreshTokenSign(
     session,
-    token,
+    config.get('jwt_access_token_expired')
+  );
+
+  //set the access token in cookie
+  res.cookie('accessToken', accessToken, {
+    maxAge: 300000, //5min
+    httpOnly: true,
   });
+  //set the refresh token in cookie
+  res.cookie('refreshToken', refreshToken, {
+    maxAge: 3.15e10, //5 year
+    httpOnly: true,
+  });
+
+  res.status(201).send({ success: true, session });
 };

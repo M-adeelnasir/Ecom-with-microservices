@@ -3,34 +3,39 @@ import config from 'config';
 
 const JWT_PRIVATE_KEY = config.get<string>('jwt_private_key');
 
+//  jwt sign (token created)
 export const jwtSign = async (
   payload: any,
   session: any,
   expiresIn: number | string
 ) => {
-  console.log('Payload ===>', payload);
+  const accessToken = jwt.sign(
+    {
+      email: payload.email,
+      user: payload._id,
+      verified: payload.verified,
+      session: session._id,
+    },
+    JWT_PRIVATE_KEY,
+    { expiresIn }
+  );
+  return accessToken;
+};
 
-  console.log({
-    email: payload.email,
-    user: payload._id,
-    verified: payload.verified,
-    session: session._id,
-  });
+//jwt sign (refresh token created)
+export const jwtRefreshTokenSign = (
+  payload: any,
+  expiresIn: number | string
+) => {
+  console.log({ payload });
+  const { user, userAgent, valid, _id, createdAt, updatedAt } = payload;
+  const token = jwt.sign(
+    { user, userAgent, valid, _id, createdAt, updatedAt },
+    JWT_PRIVATE_KEY,
+    {
+      expiresIn,
+    }
+  );
 
-  try {
-    const accessToken = jwt.sign(
-      {
-        email: payload.email,
-        user: payload._id,
-        verified: payload.verified,
-        session: session._id,
-      },
-      JWT_PRIVATE_KEY,
-      { expiresIn }
-    );
-
-    return accessToken;
-  } catch (err) {
-    console.log(err);
-  }
+  return token;
 };
