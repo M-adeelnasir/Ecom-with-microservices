@@ -1,7 +1,11 @@
 import { Response, Request } from 'express';
 import { findUserByEmail } from '../services/session.service';
 import { BadRequestError } from '../errors/badRequest.error';
-import { createSession } from '../services/session.service';
+import { get } from 'lodash';
+import {
+  createSession,
+  getAllSessionsOfUser,
+} from '../services/session.service';
 import { jwtSign, jwtRefreshTokenSign } from '../utils/jwt.utils';
 import config from 'config';
 
@@ -43,4 +47,15 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
   });
 
   res.status(201).send({ success: true, session, accessToken, refreshToken });
+};
+
+export const getAllSessionOfUserHanlder = async (
+  req: Request,
+  res: Response
+) => {
+  const { userId } = req.body;
+  console.log(userId);
+
+  const sessions = await getAllSessionsOfUser(userId);
+  res.send({ sessions });
 };

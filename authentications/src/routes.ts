@@ -2,7 +2,10 @@ import { Response, Request, Express } from 'express';
 import { createUserHandler } from './controller/user.controller';
 import { validateRequest } from './middlewares/validateRequest';
 import { createUserSchema } from './schemas/create-user.schema';
-import { sessionCreateleHandler } from './controller/session.controller';
+import {
+  sessionCreateleHandler,
+  getAllSessionOfUserHanlder,
+} from './controller/session.controller';
 import { sessionCreate } from './schemas/session-create.scehma';
 
 const baseURI = '/api/v1/users';
@@ -146,4 +149,6 @@ export default function (app: Express) {
     validateRequest(sessionCreate),
     sessionCreateleHandler
   );
+
+  app.get(baseURI + '/sessions', getAllSessionOfUserHanlder);
 }
