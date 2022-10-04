@@ -5,6 +5,7 @@ import { createUserSchema } from './schemas/create-user.schema';
 import {
   sessionCreateleHandler,
   getAllSessionOfUserHanlder,
+  deleteUserSessionHandler,
 } from './controller/session.controller';
 import { sessionCreate, userSessions } from './schemas/session-create.scehma';
 
@@ -185,4 +186,6 @@ export default function (app: Express) {
     validateRequest(userSessions),
     getAllSessionOfUserHanlder
   );
+
+  app.delete(baseURI + '/sessions', deleteUserSessionHandler);
 }

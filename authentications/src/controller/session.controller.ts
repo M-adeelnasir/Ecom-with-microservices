@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import {
   createSession,
   getAllSessionsOfUser,
+  deleteASession,
 } from '../services/session.service';
 import { jwtSign, jwtRefreshTokenSign } from '../utils/jwt.utils';
 import config from 'config';
@@ -58,4 +59,10 @@ export const getAllSessionOfUserHanlder = async (
 
   const sessions = await getAllSessionsOfUser(userId);
   res.send({ sessions });
+};
+
+export const deleteUserSessionHandler = async (req: Request, res: Response) => {
+  const { sessionId } = req.body;
+  await deleteASession(sessionId);
+  res.send('Session deleted successful');
 };

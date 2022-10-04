@@ -27,3 +27,9 @@ export const getAllSessionsOfUser = async (
   const sessions = await Session.find({ user: userId, valid: true });
   return sessions;
 };
+
+export const deleteASession = async (
+  sessionId: FilterQuery<SessionDocument>
+) => {
+  return await Session.findByIdAndDelete({ _id: sessionId });
+};
