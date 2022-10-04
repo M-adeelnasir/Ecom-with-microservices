@@ -21,11 +21,17 @@ const options: swaggerJsDoc.Options = {
           scheme: 'bearer',
           bearerFormat: 'JWT',
         },
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'accessToken',
+        },
       },
     },
     security: [
       {
         bearerAuth: [],
+        cookieAuth: [],
       },
     ],
   },

@@ -42,5 +42,5 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
     httpOnly: true,
   });
 
-  res.status(201).send({ success: true, session });
+  res.status(201).send({ success: true, session, accessToken, refreshToken });
 };

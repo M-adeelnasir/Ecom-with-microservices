@@ -64,5 +64,47 @@ describe('User', () => {
         })
         .expect(400);
     });
+    it('should return access token', async () => {
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app)
+        .post(SIGNIN_URI)
+        .send({
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+        })
+        .expect(201)
+        .then((res) => {
+          expect(res.body).toHaveProperty('accessToken');
+        });
+    });
+    it('should return refresh token', async () => {
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      await request(app)
+        .post(SIGNIN_URI)
+        .send({
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+        })
+        .expect(201)
+        .then((res) => {
+          expect(res.body).toHaveProperty('refreshToken');
+        });
+    });
   });
 });

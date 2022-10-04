@@ -27,7 +27,6 @@ export const jwtRefreshTokenSign = (
   payload: any,
   expiresIn: number | string
 ) => {
-  console.log({ payload });
   const { user, userAgent, valid, _id, createdAt, updatedAt } = payload;
   const token = jwt.sign(
     { user, userAgent, valid, _id, createdAt, updatedAt },

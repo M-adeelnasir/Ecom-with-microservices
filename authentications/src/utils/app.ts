@@ -5,6 +5,8 @@ import 'express-async-errors';
 import cors from 'cors';
 import config from 'config';
 import { errorResponse } from '../middlewares/errorResponse';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 
