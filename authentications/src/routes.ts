@@ -231,8 +231,44 @@ export default function (app: Express) {
   app.delete(
     baseURI + '/sessions',
     validateRequest(sessionIdSchema),
+    deserializeUser,
+    requireUserSignIn,
     deleteUserSessionHandler
   );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/current-user:
+   *     get:
+   *      tags:
+   *        - get Session
+   *      summary: Delete User Login Session
+   *      responses:
+   *         '200':
+   *           description: Success
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   user:
+   *                       type: string
+   *                   email:
+   *                       type: string
+   *                   verified:
+   *                       type: boolean
+   *                   session:
+   *                       type: string
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   *         '403':
+   *           description: Forbiden (require Signin)
+   */
 
   app.get(
     baseURI + '/current-user',
