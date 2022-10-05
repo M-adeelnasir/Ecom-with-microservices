@@ -11,8 +11,6 @@ export const jwtSign = async (
   session: any,
   expiresIn: number | string
 ) => {
-  console.log({ ...payload });
-
   const accessToken = jwt.sign(
     {
       email: payload.email,
@@ -23,7 +21,6 @@ export const jwtSign = async (
     JWT_PRIVATE_KEY,
     { expiresIn }
   );
-  console.log('YES ==>', accessToken);
   return accessToken;
 };
 
@@ -33,8 +30,6 @@ export const jwtRefreshTokenSign = (
   expiresIn: number | string
 ) => {
   const { user, userAgent, valid, _id, createdAt, updatedAt } = payload;
-
-  console.log(user, userAgent, _id);
 
   const token = jwt.sign(
     { user, userAgent, valid, _id, createdAt, updatedAt },

@@ -55,7 +55,6 @@ export const getAllSessionOfUserHanlder = async (
   res: Response
 ) => {
   const { userId } = req.body;
-  console.log(userId);
 
   const sessions = await getAllSessionsOfUser(userId);
   res.send({ sessions });

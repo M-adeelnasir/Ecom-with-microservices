@@ -1,7 +1,4 @@
-import mongoose, { FilterQuery, QueryOptions } from 'mongoose';
-import { UserDocument } from '../model/user.model';
-import { User } from '../model/user.model';
-import { BadRequestError } from '../errors/badRequest.error';
+import { FilterQuery } from 'mongoose';
 import Session, { SessionDocument } from '../model/session.model';
 import { decodeToken, jwtSign } from '../utils/jwt.utils';
 import { get } from 'lodash';
