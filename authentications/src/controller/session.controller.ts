@@ -64,5 +64,5 @@ export const getAllSessionOfUserHanlder = async (
 export const deleteUserSessionHandler = async (req: Request, res: Response) => {
   const { sessionId } = req.body;
   await deleteASession(sessionId);
-  res.send('Session deleted successful');
+  res.status(204).send('Session deleted successful');
 };

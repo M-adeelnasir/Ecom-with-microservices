@@ -1,4 +1,4 @@
-import { DocumentDefinition } from 'mongoose';
+import { DocumentDefinition, FilterQuery } from 'mongoose';
 import { UserDocument, User } from '../model/user.model';
 import { BadRequestError } from '../errors/badRequest.error';
 
@@ -14,4 +14,25 @@ export const signupUser = async (
     }
     throw new Error();
   }
+};
+export const getAUser = async (query: string) => {
+  try {
+    const user = await User.findOne({ _id: query })
+      .lean()
+      .select('-password -confirmPassword');
+    return user;
+  } catch (err: any) {
+    throw new Error();
+  }
+};
+
+// find user with email
+export const findUserByEmail = async (
+  email: FilterQuery<UserDocument['email']>
+) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new BadRequestError('Invalid Creadentials');
+  }
+  return user;
 };

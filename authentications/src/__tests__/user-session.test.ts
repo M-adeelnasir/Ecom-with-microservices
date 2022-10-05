@@ -130,5 +130,27 @@ describe('User', () => {
         })
         .expect(200);
     });
+    it('should return 204 on deleteing a login session', async () => {
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app).post(SIGNIN_URI).send({
+        email: 'exampl@gmail.com',
+        password: 'kjfj@SldkfW874!',
+      });
+      const sessionId = res.body.session._id;
+      await request(app)
+        .delete(USER_SESSION)
+        .send({
+          sessionId,
+        })
+        .expect(204);
+    });
   });
 });
