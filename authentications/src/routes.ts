@@ -1,7 +1,8 @@
 import { Response, Request, Express } from 'express';
-import { createUserHandler } from './controller/user.controller';
+import { createUserHandler, curretUser } from './controller/user.controller';
 import { validateRequest } from './middlewares/validateRequest';
 import { createUserSchema } from './schemas/create-user.schema';
+import deserializeUser from './middlewares/deserialize.user';
 import {
   requireAdminSignin,
   requireUserSignIn,
@@ -192,6 +193,8 @@ export default function (app: Express) {
   app.post(
     baseURI + '/sessions',
     validateRequest(userSessions),
+    deserializeUser,
+    requireUserSignIn,
     getAllSessionOfUserHanlder
   );
 
@@ -231,5 +234,10 @@ export default function (app: Express) {
     deleteUserSessionHandler
   );
 
-  app.get(baseURI + '/currentUser', requireUserSignIn);
+  app.get(
+    baseURI + '/current-user',
+    deserializeUser,
+    requireUserSignIn,
+    curretUser
+  );
 }

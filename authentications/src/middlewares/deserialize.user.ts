@@ -33,7 +33,7 @@ const deserializeUser = async (
     const newAccessToken = await reIssueAccessToken(refreshToken);
     if (!newAccessToken) return next();
 
-    res.setHeader('x-refresh', newAccessToken);
+    res.setHeader('accessToken', newAccessToken);
 
     console.log('---------ACCESS TOKEN IS REFRESHED----------');
 
