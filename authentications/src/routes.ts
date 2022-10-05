@@ -3,6 +3,10 @@ import { createUserHandler } from './controller/user.controller';
 import { validateRequest } from './middlewares/validateRequest';
 import { createUserSchema } from './schemas/create-user.schema';
 import {
+  requireAdminSignin,
+  requireUserSignIn,
+} from './middlewares/current.user';
+import {
   sessionCreateleHandler,
   getAllSessionOfUserHanlder,
   deleteUserSessionHandler,
@@ -226,4 +230,6 @@ export default function (app: Express) {
     validateRequest(sessionIdSchema),
     deleteUserSessionHandler
   );
+
+  app.get(baseURI + '/currentUser', requireUserSignIn);
 }
