@@ -21,3 +21,8 @@ export const userSessions = object({
     userId: string().required('User Id is required'),
   }),
 });
+export const sessionIdSchema = object({
+  body: object({
+    sessionId: string().required('Session id is required'),
+  }),
+});

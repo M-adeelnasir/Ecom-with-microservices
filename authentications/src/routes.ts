@@ -7,7 +7,11 @@ import {
   getAllSessionOfUserHanlder,
   deleteUserSessionHandler,
 } from './controller/session.controller';
-import { sessionCreate, userSessions } from './schemas/session-create.scehma';
+import {
+  sessionCreate,
+  userSessions,
+  sessionIdSchema,
+} from './schemas/session-create.scehma';
 
 const baseURI = '/api/v1/users';
 
@@ -187,5 +191,39 @@ export default function (app: Express) {
     getAllSessionOfUserHanlder
   );
 
-  app.delete(baseURI + '/sessions', deleteUserSessionHandler);
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/sessions:
+   *     delete:
+   *      tags:
+   *        - User Sessions deletion
+   *      summary: delete a login session
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              required:
+   *                - sessionId
+   *              properties:
+   *                sessionId:
+   *                    type: string
+   *                    default: sessionId
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
+
+  app.delete(
+    baseURI + '/sessions',
+    validateRequest(sessionIdSchema),
+    deleteUserSessionHandler
+  );
 }

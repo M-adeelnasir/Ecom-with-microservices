@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { findUserByEmail } from '../services/session.service';
+import { findUserByEmail } from '../services/user.service';
 import { BadRequestError } from '../errors/badRequest.error';
 import { get } from 'lodash';
 import {
@@ -7,7 +7,7 @@ import {
   getAllSessionsOfUser,
   deleteASession,
 } from '../services/session.service';
-import { jwtSign, jwtRefreshTokenSign } from '../utils/jwt.utils';
+import { jwtSign, jwtRefreshTokenSign, decodeToken } from '../utils/jwt.utils';
 import config from 'config';
 
 export const sessionCreateleHandler = async (req: Request, res: Response) => {
@@ -33,7 +33,7 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
   //create jwt refresh token
   const refreshToken = await jwtRefreshTokenSign(
     session,
-    config.get('jwt_access_token_expired')
+    config.get('jwt_refresh_token_expired')
   );
 
   //set the access token in cookie

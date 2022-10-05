@@ -7,6 +7,7 @@ import config from 'config';
 import { errorResponse } from '../middlewares/errorResponse';
 import * as dotenv from 'dotenv';
 dotenv.config();
+import deserializeUser from '../middlewares/deserialize.user';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 // }
 
 app.use(morgan('dev'));
+app.use(deserializeUser);
 
 Routes(app);
 app.use(errorResponse);
