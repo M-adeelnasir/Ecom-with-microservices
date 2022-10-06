@@ -33,13 +33,11 @@ const deserializeUser = async (
     const newAccessToken = await reIssueAccessToken(refreshToken);
     if (!newAccessToken) return next();
 
-    res.setHeader('x-refresh', newAccessToken);
-
-    console.log('---------ACCESS TOKEN IS REFRESHED----------');
-
     const { decoded } = (await decodeToken(newAccessToken)) as any;
     req.user = decoded;
 
+    console.log('---------ACCESS TOKEN IS REFRESHED----------');
+    res.setHeader('accessToken', newAccessToken);
     return next();
   }
   next();

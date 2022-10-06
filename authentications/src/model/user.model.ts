@@ -11,7 +11,7 @@ export interface UserDocument extends mongoose.Document {
   avatar?: string;
   createdAt: Date;
   updatedAt: Date;
-  role?: boolean;
+  role?: string;
   comparePassword(enteredPassword: string): Promise<Boolean>;
 }
 
@@ -51,8 +51,9 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     role: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: 'user',
+      enum: ['admin', 'user'],
     },
     avatar: {
       type: String,

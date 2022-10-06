@@ -109,6 +109,7 @@ describe('User', () => {
     });
 
     it('should return 200 on getting all login sessions currently online', async () => {
+      let ACCESS_TOKEN = null;
       await request(app)
         .post(SIGNUP_URI)
         .send({
@@ -122,12 +123,16 @@ describe('User', () => {
         email: 'exampl@gmail.com',
         password: 'kjfj@SldkfW874!',
       });
+
+      ACCESS_TOKEN = res.body.accessToken;
+
       const userId = res.body.session.user;
       await request(app)
         .post(USER_SESSION)
         .send({
           userId,
         })
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .expect(200);
     });
     it('should return 204 on deleteing a login session', async () => {
@@ -151,6 +156,57 @@ describe('User', () => {
           sessionId,
         })
         .expect(204);
+    });
+
+    it('should return 403 if user is not signing In', async () => {
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app).post(SIGNIN_URI).send({
+        email: 'exampl@gmail.com',
+        password: 'kjfj@SldkfW874!',
+      });
+      const userId = res.body.session.user;
+
+      await request(app)
+        .post(USER_SESSION)
+        .send({
+          userId,
+        })
+        .expect(403);
+    });
+    it('should return 200 for the current User', async () => {
+      let ACCESS_TOKEN = null;
+
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app).post(SIGNIN_URI).send({
+        email: 'exampl@gmail.com',
+        password: 'kjfj@SldkfW874!',
+      });
+      ACCESS_TOKEN = res.body.accessToken;
+
+      const userId = res.body.session.user;
+      await request(app)
+        .post(USER_SESSION)
+        .send({
+          userId,
+        })
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+        .expect(200);
     });
   });
 });

@@ -7,7 +7,7 @@ describe('User', () => {
   describe('create user', () => {
     //Health check
 
-    it('returns 200 on health check', async () => {
+    it('should returns 200 on health check', async () => {
       await request(app).get('/api/v1/users/health-check').expect(200);
     });
 
