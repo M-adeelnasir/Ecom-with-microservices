@@ -43,7 +43,7 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
   });
   //set the refresh token in cookie
   res.cookie('refreshToken', refreshToken, {
-    maxAge: 3.15e10, //5 year
+    maxAge: 3.15e10, //1 year
     httpOnly: true,
   });
 
