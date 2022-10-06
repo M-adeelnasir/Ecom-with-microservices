@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction, Express } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
-import { decodeToken, jwtSign } from '../utils/jwt.utils';
+import { decodeToken } from '../utils/jwt.utils';
 import { reIssueAccessToken } from './../services/session.service';
 
 declare global {
@@ -20,10 +20,12 @@ const deserializeUser = async (
     /^Bearer\s/,
     ''
   );
+
   if (!accessToken) next();
   const { expired, decoded } = (await decodeToken(accessToken)) as any;
   if (decoded) {
     req.user = decoded;
+
     return next();
   }
 
@@ -35,8 +37,8 @@ const deserializeUser = async (
 
     const { decoded } = (await decodeToken(newAccessToken)) as any;
     req.user = decoded;
-
     console.log('---------ACCESS TOKEN IS REFRESHED----------');
+
     res.setHeader('accessToken', newAccessToken);
     return next();
   }

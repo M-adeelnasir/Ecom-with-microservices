@@ -2,6 +2,7 @@ import { Response, Request } from 'express';
 import { signupUser } from '../services/user.service';
 import { BadRequestError } from '../errors/badRequest.error';
 import { get, omit } from 'lodash';
+import { findUserByEmail } from '../services/user.service';
 
 export const createUserHandler = async (req: Request, res: Response) => {
   const user = await signupUser(req.body);
@@ -11,12 +12,15 @@ export const createUserHandler = async (req: Request, res: Response) => {
   });
 };
 export const curretUser = async (req: Request, res: Response) => {
-  const user = get(req, 'user');
-  if (!user) {
+  const email = get(req.user, 'email');
+
+  if (!email) {
     throw new BadRequestError('Sign in required');
   }
 
-  res.json({
-    user: omit(user, 'iat', 'exp'),
-  });
+  const user = await findUserByEmail(email);
+  if (!user) {
+    throw new BadRequestError('User not found or eamil is invalid');
+  }
+  res.send(user);
 };

@@ -8,6 +8,7 @@ export const requireUserSignIn = async (
   next: NextFunction
 ) => {
   const user = await get(req, 'user');
+
   if (!user) {
     return res.sendStatus(403);
   }

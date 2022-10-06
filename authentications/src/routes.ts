@@ -7,6 +7,7 @@ import {
   requireAdminSignin,
   requireUserSignIn,
 } from './middlewares/current.user';
+import { sendVerificationCodeHanlder } from './controller/phone-verification.controller';
 import {
   sessionCreateleHandler,
   getAllSessionOfUserHanlder,
@@ -244,8 +245,8 @@ export default function (app: Express) {
    *   /api/v1/users/current-user:
    *     get:
    *      tags:
-   *        - get Session
-   *      summary: Delete User Login Session
+   *        - get current user
+   *      summary: current logged in user
    *      responses:
    *         '200':
    *           description: Success
@@ -254,13 +255,23 @@ export default function (app: Express) {
    *               schema:
    *                 type: object
    *                 properties:
-   *                   user:
+   *                   _id:
    *                       type: string
    *                   email:
    *                       type: string
    *                   verified:
    *                       type: boolean
-   *                   session:
+   *                   countryCode:
+   *                       type: string
+   *                   phoneNumber:
+   *                       type: string
+   *                   firstName:
+   *                       type: string
+   *                   avatar:
+   *                       type: string
+   *                   createdAt:
+   *                       type: boolean
+   *                   updatedAt:
    *                       type: string
    *         '400':
    *          description: Bad Request
@@ -276,4 +287,5 @@ export default function (app: Express) {
     requireUserSignIn,
     curretUser
   );
+  app.post(baseURI + '/send-opt', deserializeUser, sendVerificationCodeHanlder);
 }

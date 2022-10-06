@@ -45,7 +45,7 @@ export const jwtRefreshTokenSign = (
 //jwt decode/verify token
 export const decodeToken = async (token: string) => {
   try {
-    const decoded = jwt.verify(token, JWT_PRIVATE_KEY);
+    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY!);
 
     return { valid: true, decoded, expired: false };
   } catch (err) {
