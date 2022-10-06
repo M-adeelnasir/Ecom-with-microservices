@@ -1,13 +1,10 @@
 import { Response, Request } from 'express';
 import { BadRequestError } from '../errors/badRequest.error';
-import { sendVerificationOPTCode } from '../services/phone-verification.service';
+import { sendOPT, verifyOPT } from '../services/phone-verification.service';
 import { get } from 'lodash';
 import { findUserByEmail } from '../services/user.service';
 
-export const sendVerificationCodeHanlder = async (
-  req: Request,
-  res: Response
-) => {
+export const sendOPTHandler = async (req: Request, res: Response) => {
   const { countryCode, phoneNumber } = req.body;
   if (!countryCode || !phoneNumber) {
     throw new BadRequestError('country code and phone number is required');
@@ -21,15 +18,32 @@ export const sendVerificationCodeHanlder = async (
 
   await user.save();
 
-  const response = await sendVerificationOPTCode(countryCode, phoneNumber);
-  res.send(response.to);
+  const response = await sendOPT(countryCode, phoneNumber);
+  res.send(`OPT code is sent to ${response.to}`);
 };
 
-export const verifyVerficationCodeHanlder = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const { optCode } = req.body;
-  } catch (err) {}
+export const verifyOPTHandler = async (req: Request, res: Response) => {
+  const { optCode } = req.body;
+  const email = await get(req.user, 'email');
+
+  if (!optCode) {
+    throw new BadRequestError('OPT code in=s required');
+  }
+
+  const user = await findUserByEmail(email);
+  if (!user) {
+    throw new BadRequestError('User not found');
+  }
+
+  const { phoneNumber, countryCode } = user;
+
+  const response = await verifyOPT(phoneNumber, countryCode, optCode);
+
+  // console.log(resp);
+
+  if (!response.valid) {
+    throw new BadRequestError('Invalid OPT Code');
+  }
+
+  res.send('OPT verified successfull');
 };

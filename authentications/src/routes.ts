@@ -7,7 +7,10 @@ import {
   requireAdminSignin,
   requireUserSignIn,
 } from './middlewares/current.user';
-import { sendVerificationCodeHanlder } from './controller/phone-verification.controller';
+import {
+  sendOPTHandler,
+  verifyOPTHandler,
+} from './controller/phone-verification.controller';
 import {
   sessionCreateleHandler,
   getAllSessionOfUserHanlder,
@@ -287,5 +290,6 @@ export default function (app: Express) {
     requireUserSignIn,
     curretUser
   );
-  app.post(baseURI + '/send-opt', deserializeUser, sendVerificationCodeHanlder);
+  app.post(baseURI + '/send-opt', deserializeUser, sendOPTHandler);
+  app.post(baseURI + '/verify-opt', deserializeUser, verifyOPTHandler);
 }
