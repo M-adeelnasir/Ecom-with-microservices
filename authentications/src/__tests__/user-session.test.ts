@@ -136,6 +136,7 @@ describe('User', () => {
         .expect(200);
     });
     it('should return 204 on deleteing a login session', async () => {
+      let ACCESS_TOKEN = null;
       await request(app)
         .post(SIGNUP_URI)
         .send({
@@ -149,12 +150,14 @@ describe('User', () => {
         email: 'exampl@gmail.com',
         password: 'kjfj@SldkfW874!',
       });
+      ACCESS_TOKEN = res.body.accessToken;
       const sessionId = res.body.session._id;
       await request(app)
         .delete(USER_SESSION)
         .send({
           sessionId,
         })
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .expect(204);
     });
 
