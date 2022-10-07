@@ -5,7 +5,7 @@ export default {
   host: 'shopproduct.dev',
   node_env: 'development',
   jwt_private_key: process.env.JWT_PRIVATE_KEY,
-  jwt_access_token_expired: '1m',
+  jwt_access_token_expired: '15m',
   jwt_refresh_token_expired: '1y',
   twilio_account_sid: process.env.TWILIO_ACCOUNT_SID,
   twilio_service_sid: process.env.TWILIO_SERVICE_SID,

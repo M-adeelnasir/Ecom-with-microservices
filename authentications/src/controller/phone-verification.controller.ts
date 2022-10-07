@@ -34,13 +34,8 @@ export const verifyOPTHandler = async (req: Request, res: Response) => {
   if (!user) {
     throw new BadRequestError('User not found');
   }
-
   const { phoneNumber, countryCode } = user;
-
   const response = await verifyOPT(phoneNumber, countryCode, optCode);
-
-  // console.log(resp);
-
   if (!response.valid) {
     throw new BadRequestError('Invalid OPT Code');
   }

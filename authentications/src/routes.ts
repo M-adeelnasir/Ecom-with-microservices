@@ -290,6 +290,71 @@ export default function (app: Express) {
     requireUserSignIn,
     curretUser
   );
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/send-opt:
+   *     post:
+   *      tags:
+   *        - Send OPT code
+   *      summary: OPT code send to user phone number
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              required:
+   *                - countryCode
+   *                -  phoneNumber
+   *              properties:
+   *                countryCode:
+   *                    type: string
+   *                    default: +92
+   *                phoneNumber:
+   *                    type: string
+   *                    default: 333032235
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
+
   app.post(baseURI + '/send-opt', deserializeUser, sendOPTHandler);
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/verify-opt:
+   *     post:
+   *      tags:
+   *        - Verify OPT code
+   *      summary: Verify OPT Code
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              required:
+   *                - optCode
+   *              properties:
+   *                optCode:
+   *                    type: string
+   *                    default: +92
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
+
   app.post(baseURI + '/verify-opt', deserializeUser, verifyOPTHandler);
 }
