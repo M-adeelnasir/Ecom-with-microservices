@@ -395,7 +395,6 @@ export default function (app: Express) {
     deserializeUser,
     sendEmailVerificationHandler
   );
-
   /**
    * @openapi
    * security:
@@ -424,12 +423,32 @@ export default function (app: Express) {
    *         '409':
    *           description: Conflict
    */
+
   app.post(
     baseURI + '/verify-email-opt',
     deserializeUser,
     validateRequest(verifyOPTSchema),
     verifyEmailOPThanlder
   );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/logout:
+   *     delete:
+   *      tags:
+   *        - Logout session
+   *      summary: logout session from the device
+   *      responses:
+   *         '204':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
   app.delete(
     baseURI + '/logout',
     deserializeUser,
