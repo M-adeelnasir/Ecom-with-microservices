@@ -6,10 +6,6 @@ import { findUserByEmail } from '../services/user.service';
 
 export const sendOPTHandler = async (req: Request, res: Response) => {
   const { countryCode, phoneNumber } = req.body;
-  if (!countryCode || !phoneNumber) {
-    throw new BadRequestError('country code and phone number is required');
-  }
-
   const email = get(req.user, 'email');
 
   const user = await findUserByEmail(email);
@@ -23,19 +19,17 @@ export const sendOPTHandler = async (req: Request, res: Response) => {
 };
 
 export const verifyOPTHandler = async (req: Request, res: Response) => {
-  const { optCode } = req.body;
+  const { opt } = req.body;
   const email = await get(req.user, 'email');
-
-  if (!optCode) {
+  if (!opt) {
     throw new BadRequestError('OPT code in=s required');
   }
-
   const user = await findUserByEmail(email);
   if (!user) {
     throw new BadRequestError('User not found');
   }
   const { phoneNumber, countryCode } = user;
-  const response = await verifyOPT(phoneNumber, countryCode, optCode);
+  const response = await verifyOPT(phoneNumber, countryCode, opt);
   if (!response.valid) {
     throw new BadRequestError('Invalid OPT Code');
   }

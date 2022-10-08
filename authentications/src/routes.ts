@@ -25,6 +25,10 @@ import {
   userSessions,
   sessionIdSchema,
 } from './schemas/session-create.scehma';
+import {
+  phoneOPTScehma,
+  verifyOPTSchema,
+} from './schemas/opt-verifications.schema';
 
 const baseURI = '/api/v1/users';
 
@@ -188,7 +192,6 @@ export default function (app: Express) {
    *              properties:
    *                userId:
    *                    type: string
-   *                    default: UserId
    *      responses:
    *         '200':
    *           description: Success
@@ -226,7 +229,6 @@ export default function (app: Express) {
    *              properties:
    *                sessionId:
    *                    type: string
-   *                    default: sessionId
    *      responses:
    *         '200':
    *           description: Success
@@ -315,10 +317,8 @@ export default function (app: Express) {
    *              properties:
    *                countryCode:
    *                    type: string
-   *                    default: +92
    *                phoneNumber:
    *                    type: string
-   *                    default: 333032235
    *      responses:
    *         '200':
    *           description: Success
@@ -328,7 +328,12 @@ export default function (app: Express) {
    *           description: Conflict
    */
 
-  app.post(baseURI + '/send-opt', deserializeUser, sendOPTHandler);
+  app.post(
+    baseURI + '/send-opt',
+    deserializeUser,
+    validateRequest(phoneOPTScehma),
+    sendOPTHandler
+  );
 
   /**
    * @openapi
@@ -339,18 +344,17 @@ export default function (app: Express) {
    *     post:
    *      tags:
    *        - Verify OPT code
-   *      summary: Verify OPT Code
+   *      summary: Verify Phone OPT Code
    *      requestBody:
    *        content:
    *          application/json:
    *            schema:
    *              type: object
    *              required:
-   *                - optCode
+   *                - opt
    *              properties:
-   *                optCode:
+   *                otp:
    *                    type: string
-   *                    default: +92
    *      responses:
    *         '200':
    *           description: Success
@@ -360,16 +364,69 @@ export default function (app: Express) {
    *           description: Conflict
    */
 
-  app.post(baseURI + '/verify-opt', deserializeUser, verifyOPTHandler);
+  app.post(
+    baseURI + '/verify-opt',
+    deserializeUser,
+    validateRequest(verifyOPTSchema),
+    verifyOPTHandler
+  );
 
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/send-email-opt:
+   *     post:
+   *      tags:
+   *        - Send OPT code
+   *      summary: OPT code send to user Email address
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
   app.post(
     baseURI + '/send-email-opt',
     deserializeUser,
     sendEmailVerificationHandler
   );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/verify-email-opt:
+   *     post:
+   *      tags:
+   *        - Verify OPT code
+   *      summary: Verify Email OPT Code
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              required:
+   *                - opt
+   *              properties:
+   *                opt:
+   *                    type: string
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
   app.post(
     baseURI + '/verify-email-opt',
     deserializeUser,
+    validateRequest(verifyOPTSchema),
     verifyEmailOPThanlder
   );
 }
