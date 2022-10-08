@@ -162,7 +162,7 @@ describe('User', () => {
         .expect(204);
     });
 
-    it('should return 403 if user is not signing In', async () => {
+    it('should return 401 if user is not signing In', async () => {
       await request(app)
         .post(SIGNUP_URI)
         .send({
@@ -183,7 +183,7 @@ describe('User', () => {
         .send({
           userId,
         })
-        .expect(403);
+        .expect(401);
     });
     it('should return 200 for the current User', async () => {
       let ACCESS_TOKEN = null;

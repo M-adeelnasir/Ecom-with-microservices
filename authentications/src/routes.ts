@@ -1,5 +1,5 @@
 import { Response, Request, Express } from 'express';
-import { createUserHandler, curretUser } from './controller/user.controller';
+import { createUserHandler, currentUser } from './controller/user.controller';
 import { validateRequest } from './middlewares/validateRequest';
 import { createUserSchema } from './schemas/create-user.schema';
 import deserializeUser from './middlewares/deserialize.user';
@@ -295,7 +295,7 @@ export default function (app: Express) {
     baseURI + '/current-user',
     deserializeUser,
     requireUserSignIn,
-    curretUser
+    currentUser
   );
   /**
    * @openapi

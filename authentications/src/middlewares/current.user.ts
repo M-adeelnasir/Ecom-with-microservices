@@ -10,12 +10,12 @@ export const requireUserSignIn = async (
   const email = await get(req.user, 'email');
 
   if (!email) {
-    return res.sendStatus(403);
+    return res.status(401);
   }
   const user = await findUserByEmail(email);
 
   if (!user) {
-    return res.sendStatus(403);
+    return res.sendStatus(401).json({ msg: 'Please log in first' });
   }
   next();
 };
@@ -29,7 +29,7 @@ export const requireAdminSignin = async (
   const user = await findUserByEmail(email);
 
   if (user!.role !== 'admin') {
-    return res.sendStatus(403);
+    return res.sendStatus(401).json({ msg: "You don't have admin rights" });
   }
   return next();
 };

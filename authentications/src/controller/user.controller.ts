@@ -11,7 +11,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
     user,
   });
 };
-export const curretUser = async (req: Request, res: Response) => {
+export const currentUser = async (req: Request, res: Response) => {
   const email = get(req.user, 'email');
 
   if (!email) {
