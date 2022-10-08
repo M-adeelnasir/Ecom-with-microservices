@@ -19,7 +19,7 @@ export const sendEmailVerificationHandler = async (
     user: user._id,
     opt,
     createdAt: new Date(Date.now()),
-    expiresAt: Date.now() + 360000,
+    expiresAt: new Date(Date.now() + 360000),
   });
 
   const body = `<div>

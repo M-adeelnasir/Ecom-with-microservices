@@ -6,7 +6,7 @@ export interface EmailVerificationDocument extends mongoose.Document {
   email: string;
   user: UserDocument['_id'];
   opt: string;
-  expiresAt: Date | number;
+  expiresAt: Date;
   createdAt: Date;
   compareEmailOPT(enteredOpt: string): Promise<boolean>;
 }
@@ -24,7 +24,7 @@ const emailVerificationSchema = new mongoose.Schema({
     required: [true, 'email code is required'],
   },
   expiresAt: {
-    type: Number,
+    type: mongoose.Schema.Types.Date,
     required: true,
   },
   createdAt: {
