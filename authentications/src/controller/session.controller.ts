@@ -1,4 +1,5 @@
 import { Response, Request } from 'express';
+import config from 'config';
 import { findUserByEmail } from '../services/user.service';
 import { BadRequestError } from '../errors/badRequest.error';
 import { get } from 'lodash';
@@ -7,8 +8,7 @@ import {
   getAllSessionsOfUser,
   deleteASession,
 } from '../services/session.service';
-import { jwtSign, jwtRefreshTokenSign, decodeToken } from '../utils/jwt.utils';
-import config from 'config';
+import { jwtSign, jwtRefreshTokenSign } from '../utils/jwt.utils';
 
 export const sessionCreateleHandler = async (req: Request, res: Response) => {
   //validate user if exits
@@ -64,4 +64,22 @@ export const deleteUserSessionHandler = async (req: Request, res: Response) => {
   const { sessionId } = req.body;
   await deleteASession(sessionId);
   res.status(204).send('Session deleted successful');
+};
+
+export const logoutSessionHandler = async (req: Request, res: Response) => {
+  try {
+    const sessionId = await get(req.user, 'session');
+    await deleteASession(sessionId);
+    res
+      .cookie('refreshToken', '')
+      .cookie('accessToken', '')
+      .setHeader('accessToken', '')
+      .status(204)
+      .send('logout');
+  } catch (err) {
+    res.status(500).json({
+      msg: 'SERVER ERROR',
+      success: false,
+    });
+  }
 };

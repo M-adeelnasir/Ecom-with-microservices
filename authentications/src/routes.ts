@@ -19,6 +19,7 @@ import {
   sessionCreateleHandler,
   getAllSessionOfUserHanlder,
   deleteUserSessionHandler,
+  logoutSessionHandler,
 } from './controller/session.controller';
 import {
   sessionCreate,
@@ -428,5 +429,11 @@ export default function (app: Express) {
     deserializeUser,
     validateRequest(verifyOPTSchema),
     verifyEmailOPThanlder
+  );
+  app.delete(
+    baseURI + '/logout',
+    deserializeUser,
+    requireUserSignIn,
+    logoutSessionHandler
   );
 }

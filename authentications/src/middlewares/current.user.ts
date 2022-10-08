@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
-import { getAUser } from '../services/user.service';
+import { findUserByEmail } from '../services/user.service';
 
 export const requireUserSignIn = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const user = await get(req, 'user');
+  const email = await get(req.user, 'email');
+  const user = await findUserByEmail(email);
 
   if (!user) {
     return res.sendStatus(403);
@@ -20,8 +21,8 @@ export const requireAdminSignin = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = await get(req.user, 'user');
-  const user = await getAUser(userId);
+  const email = await get(req.user, 'email');
+  const user = await findUserByEmail(email);
 
   if (user!.role !== 'admin') {
     return res.sendStatus(403);
