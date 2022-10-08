@@ -3,7 +3,7 @@ import config from 'config';
 import EmailVerification, {
   EmailVerificationDocument,
 } from '../model/email-verification.model';
-import { DocumentDefinition } from 'mongoose';
+import { DocumentDefinition, FilterQuery } from 'mongoose';
 
 const sendEmail = async (email: string, subject: string, HTMLbody: string) => {
   try {
@@ -39,5 +39,18 @@ export const createEmailDocument = async (
   input: DocumentDefinition<Omit<EmailVerificationDocument, 'compareEmailOPT'>>
 ) => {
   const response = await EmailVerification.create(input);
+  return response;
+};
+//find user email verification document
+export const findEmailDocument = async (
+  email: FilterQuery<EmailVerificationDocument['email']>
+) => {
+  const response = await EmailVerification.findOne({ email });
+  return response;
+};
+export const deleteEmailDocument = async (
+  email: FilterQuery<EmailVerificationDocument['email']>
+) => {
+  const response = await EmailVerification.deleteMany({ email });
   return response;
 };

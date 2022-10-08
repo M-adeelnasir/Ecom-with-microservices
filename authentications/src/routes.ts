@@ -3,7 +3,10 @@ import { createUserHandler, curretUser } from './controller/user.controller';
 import { validateRequest } from './middlewares/validateRequest';
 import { createUserSchema } from './schemas/create-user.schema';
 import deserializeUser from './middlewares/deserialize.user';
-import { sendEmailVerificationHandler } from './controller/email-verification.controller';
+import {
+  sendEmailVerificationHandler,
+  verifyEmailOPThanlder,
+} from './controller/email-verification.controller';
 import {
   requireAdminSignin,
   requireUserSignIn,
@@ -363,5 +366,10 @@ export default function (app: Express) {
     baseURI + '/send-email-opt',
     deserializeUser,
     sendEmailVerificationHandler
+  );
+  app.post(
+    baseURI + '/verify-email-opt',
+    deserializeUser,
+    verifyEmailOPThanlder
   );
 }
