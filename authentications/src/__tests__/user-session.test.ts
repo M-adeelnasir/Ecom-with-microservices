@@ -4,6 +4,7 @@ import request from 'supertest';
 const SIGNIN_URI = '/api/v1/users/signin';
 const SIGNUP_URI = '/api/v1/users/signup';
 const USER_SESSION = '/api/v1/users/sessions';
+const USER_LOGOUT = '/api/v1/users/logout';
 
 describe('User', () => {
   describe('User login Session', () => {
@@ -210,6 +211,53 @@ describe('User', () => {
         })
         .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .expect(200);
+    });
+    it('should return 204 if the user logouts', async () => {
+      let ACCESS_TOKEN = null;
+
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app).post(SIGNIN_URI).send({
+        email: 'exampl@gmail.com',
+        password: 'kjfj@SldkfW874!',
+      });
+      ACCESS_TOKEN = res.body.accessToken;
+
+      await request(app)
+        .delete(USER_LOGOUT)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+        .expect(204);
+    });
+    it('should return true if accessToken is removed on logout', async () => {
+      let ACCESS_TOKEN = null;
+
+      await request(app)
+        .post(SIGNUP_URI)
+        .send({
+          firstName: 'adeel nasir',
+          email: 'exampl@gmail.com',
+          password: 'kjfj@SldkfW874!',
+          confirmPassword: 'kjfj@SldkfW874!',
+        })
+        .expect(201);
+      const res = await request(app).post(SIGNIN_URI).send({
+        email: 'exampl@gmail.com',
+        password: 'kjfj@SldkfW874!',
+      });
+      ACCESS_TOKEN = res.body.accessToken;
+
+      const result = await request(app)
+        .delete(USER_LOGOUT)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`);
+      const accessToken = result.headers.accesstoken;
+      expect(accessToken).toEqual('');
     });
   });
 });

@@ -70,6 +70,7 @@ export const logoutSessionHandler = async (req: Request, res: Response) => {
   try {
     const sessionId = await get(req.user, 'session');
     await deleteASession(sessionId);
+
     res
       .cookie('refreshToken', '')
       .cookie('accessToken', '')
