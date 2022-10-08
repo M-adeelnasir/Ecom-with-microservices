@@ -1,6 +1,7 @@
 import { BadRequestError } from '../errors/badRequest.error';
 import { Twilio } from 'twilio';
 import config from 'config';
+
 const TWILIO_ACCOUNT_AUTH = config.get<string>('twilio_account_auth');
 const TWILIO_SERVICE_SID = config.get<string>('twilio_service_sid');
 const TWILIO_ACCOUNT_SID = config.get<string>('twilio_account_sid');
