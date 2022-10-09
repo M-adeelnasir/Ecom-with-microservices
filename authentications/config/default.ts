@@ -13,4 +13,6 @@ export default {
   email_address: process.env.EMAIL_ADDRESS,
   email_password: process.env.EMAIL_PASSWORD,
   email_host: 'smtp.ethereal.email',
+  google_client_id: process.env.GOOGLE_CLIENT_ID,
+  google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
 };

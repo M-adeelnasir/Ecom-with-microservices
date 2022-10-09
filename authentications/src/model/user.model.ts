@@ -14,6 +14,7 @@ export interface UserDocument extends mongoose.Document {
   role?: string;
   countryCode?: string;
   phoneNumber?: string;
+  googleId?: string;
   comparePassword(enteredPassword: string): Promise<Boolean>;
 }
 
@@ -38,13 +39,11 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
       min: [8, 'password must conatain atleast 8 charcters'],
       trim: true,
     },
     confirmPassword: {
       type: String,
-      required: [true, 'Password is required'],
       min: [8, 'password must conatain atleast 8 charcters'],
       trim: true,
     },
@@ -64,6 +63,9 @@ const userSchema = new mongoose.Schema(
       enum: ['admin', 'user'],
     },
     avatar: {
+      type: String,
+    },
+    googleId: {
       type: String,
     },
   },

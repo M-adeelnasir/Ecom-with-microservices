@@ -7,6 +7,8 @@ import config from 'config';
 import { errorResponse } from '../middlewares/errorResponse';
 import * as dotenv from 'dotenv';
 dotenv.config();
+import '../services/passport-oauth.service';
+import cookieSession from 'cookie-session';
 
 const app = express();
 
@@ -14,11 +16,16 @@ app.use(cors());
 app.use(express.json());
 
 // const NODE_ENV = config.get<string>('node_env');
-
 // if (NODE_ENV === 'development') {
 // }
 
 app.use(morgan('dev'));
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: ['498493'],
+  })
+);
 
 Routes(app);
 app.use(errorResponse);
