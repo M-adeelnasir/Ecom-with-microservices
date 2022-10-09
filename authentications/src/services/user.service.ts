@@ -36,3 +36,39 @@ export const findUserByEmail = async (
   }
   return user;
 };
+
+export const googleSignup = async (
+  input: DocumentDefinition<
+    Omit<
+      UserDocument,
+      | 'createdAt'
+      | 'updatedAt'
+      | 'comparePassword'
+      | 'confirmPassword'
+      | 'password'
+    >
+  >
+) => {
+  try {
+    const user = await User.create(input);
+    return user;
+  } catch (err: any) {
+    if (err.code === 11000) {
+      throw new BadRequestError('Email is already reserved');
+    }
+    console.log(err);
+    throw new BadRequestError('Something is wrong!');
+  }
+};
+
+//find user by googleId
+export const getAUserByGoogleId = async (query: string) => {
+  try {
+    const user = await User.findOne({ googleId: query })
+      .lean()
+      .select('-password -confirmPassword');
+    return user;
+  } catch (err: any) {
+    throw new Error();
+  }
+};
