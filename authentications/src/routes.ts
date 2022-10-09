@@ -31,6 +31,8 @@ import {
   verifyOPTSchema,
 } from './schemas/opt-verifications.schema';
 
+import passport from 'passport';
+
 const baseURI = '/api/v1/users';
 
 export default function (app: Express) {
@@ -48,6 +50,8 @@ export default function (app: Express) {
   app.get(baseURI + '/health-check', (req: Request, res: Response) => {
     res.sendStatus(200);
   });
+
+  // * USERS AND USER SESSIONS ROUTES
 
   /**
    * @openapi
@@ -215,43 +219,6 @@ export default function (app: Express) {
    * security:
    *   - bearerAuth: []
    * paths:
-   *   /api/v1/users/sessions:
-   *     delete:
-   *      tags:
-   *        - User Sessions deletion
-   *      summary: delete a login session
-   *      requestBody:
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: object
-   *              required:
-   *                - sessionId
-   *              properties:
-   *                sessionId:
-   *                    type: string
-   *      responses:
-   *         '200':
-   *           description: Success
-   *         '400':
-   *          description: Bad Request
-   *         '409':
-   *           description: Conflict
-   */
-
-  app.delete(
-    baseURI + '/sessions',
-    validateRequest(sessionIdSchema),
-    deserializeUser,
-    requireUserSignIn,
-    deleteUserSessionHandler
-  );
-
-  /**
-   * @openapi
-   * security:
-   *   - bearerAuth: []
-   * paths:
    *   /api/v1/users/current-user:
    *     get:
    *      tags:
@@ -297,6 +264,70 @@ export default function (app: Express) {
     requireUserSignIn,
     currentUser
   );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/logout:
+   *     delete:
+   *      tags:
+   *        - Logout session
+   *      summary: logout session from the device
+   *      responses:
+   *         '204':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
+  app.delete(
+    baseURI + '/logout',
+    deserializeUser,
+    requireUserSignIn,
+    logoutSessionHandler
+  );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/users/sessions:
+   *     delete:
+   *      tags:
+   *        - User Sessions deletion
+   *      summary: delete a login session
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              required:
+   *                - sessionId
+   *              properties:
+   *                sessionId:
+   *                    type: string
+   *      responses:
+   *         '200':
+   *           description: Success
+   *         '400':
+   *          description: Bad Request
+   *         '409':
+   *           description: Conflict
+   */
+
+  app.delete(
+    baseURI + '/sessions',
+    validateRequest(sessionIdSchema),
+    deserializeUser,
+    requireUserSignIn,
+    deleteUserSessionHandler
+  );
+
+  // * SEND AND VERIFY OPT TO USER PHONE
   /**
    * @openapi
    * security:
@@ -372,6 +403,7 @@ export default function (app: Express) {
     verifyOPTHandler
   );
 
+  //* SEND AND VERIFY USER EMAIL BY SENDING OPT
   /**
    * @openapi
    * security:
@@ -431,28 +463,26 @@ export default function (app: Express) {
     verifyEmailOPThanlder
   );
 
-  /**
-   * @openapi
-   * security:
-   *   - bearerAuth: []
-   * paths:
-   *   /api/v1/users/logout:
-   *     delete:
-   *      tags:
-   *        - Logout session
-   *      summary: logout session from the device
-   *      responses:
-   *         '204':
-   *           description: Success
-   *         '400':
-   *          description: Bad Request
-   *         '409':
-   *           description: Conflict
-   */
-  app.delete(
-    baseURI + '/logout',
-    deserializeUser,
-    requireUserSignIn,
-    logoutSessionHandler
+  // * GOOGLE AUTHENTICATION
+  app.get(
+    baseURI + '/auth/google',
+    passport.authenticate('google', {
+      scope: ['profile', 'email'],
+    })
+  );
+
+  app.get(
+    baseURI + '/auth-google-callback',
+    passport.authenticate('google'),
+    // todo deal whenever starts client side development
+    (req, res) => {
+      try {
+        //@ts-ignore
+        console.log('Request done', req.user);
+        res.sendStatus(200);
+      } catch (err: any) {
+        console.log(err);
+      }
+    }
   );
 }
