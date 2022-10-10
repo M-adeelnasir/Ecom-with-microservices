@@ -17,9 +17,9 @@ app.use(express.json());
 
 const NODE_ENV = config.get<string>('node_env');
 if (NODE_ENV === 'development') {
+  app.use(morgan('dev'));
 }
 
-app.use(morgan('dev'));
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
