@@ -57,8 +57,6 @@ passport.use(
         });
         done(null, user);
       } catch (err: any) {
-        console.log(err);
-
         //   @ts-ignore
         done(err, null);
       }
