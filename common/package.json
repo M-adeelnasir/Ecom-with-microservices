@@ -1,0 +1,27 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "this common module for shopproduct microservices",
+  "main": "index.js",
+  "scripts": {
+    "clean": "del-cli ./build/*",
+    "build": "npm run clean && tsc",
+    "pub": "git add . && git commit -m\"Updates\" && npm version patch && npm run build && npm publish"
+  },
+  "author": "M-adeelnasir",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/lodash": "^4.14.186",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.14",
+    "del-cli": "^5.0.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "ts-node": "^10.9.1",
+    "yup": "^0.32.11"
+  }
+}
