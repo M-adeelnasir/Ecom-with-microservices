@@ -1,8 +1,12 @@
 {
-  "name": "common",
+  "name": "@shopproduct/common-module",
   "version": "1.0.0",
   "description": "this common module for shopproduct microservices",
-  "main": "index.js",
+  "main": "/build/index.js",
+  "types": "/build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
   "scripts": {
     "clean": "del-cli ./build/*",
     "build": "npm run clean && tsc",
