@@ -7,7 +7,6 @@ import config from 'config';
 import { errorResponse } from '@shopproduct/common-module';
 import * as dotenv from 'dotenv';
 dotenv.config();
-import '../services/passport-oauth.service';
 import cookieSession from 'cookie-session';
 
 const app = express();
