@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 import { sendOPT, verifyOPT } from '../services/phone-verification.service';
 import { get } from 'lodash';
 import { findUserByEmail } from '../services/user.service';

@@ -1,4 +1,4 @@
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 import { Twilio } from 'twilio';
 import config from 'config';
 

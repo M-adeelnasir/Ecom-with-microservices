@@ -1,7 +1,7 @@
 import { Response, Request } from 'express';
 import config from 'config';
 import { findUserByEmail } from '../services/user.service';
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 import { get } from 'lodash';
 import {
   createSession,

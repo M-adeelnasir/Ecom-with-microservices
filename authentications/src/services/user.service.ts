@@ -1,6 +1,6 @@
 import { DocumentDefinition, FilterQuery } from 'mongoose';
 import { UserDocument, User } from '../model/user.model';
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 
 export const signupUser = async (
   input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt'>>

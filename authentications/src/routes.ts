@@ -1,6 +1,6 @@
 import { Response, Request, Express } from 'express';
 import { createUserHandler, currentUser } from './controller/user.controller';
-import { validateRequest } from './middlewares/validateRequest';
+import { validateRequest } from '@shopproduct/common-module';
 import { createUserSchema } from './schemas/create-user.schema';
 import deserializeUser from './middlewares/deserialize.user';
 import {

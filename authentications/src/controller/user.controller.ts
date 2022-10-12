@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
 import { signupUser } from '../services/user.service';
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 import { get, omit } from 'lodash';
 import { findUserByEmail } from '../services/user.service';
 

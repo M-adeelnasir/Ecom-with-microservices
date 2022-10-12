@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AnySchema } from 'yup';
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 
 export const validateRequest =
   (Schema: AnySchema) =>

@@ -1,15 +1,15 @@
 {
-  "name": "authentications",
+  "name": "products",
   "version": "1.0.0",
-  "description": "authentication will all here",
+  "description": "Product service",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --config nodemon.json src/index.js",
     "start": "node src/index.ts",
-    "dev": "nodemon --config nodemon.json src/index.ts",
-    "gen": "plop",
     "build": "tsc",
-    "test": "jest --watchAll --no-cache --detectOpenHandles",
-    "clean": "del-cli ./build/*"
+    "clean": "del-cli ./build/*",
+    "gen": "plop",
+    "test": "jest --watchAll --no-cache --detectOpenHandles"
   },
   "author": "M-adeelnasir",
   "license": "ISC",

@@ -6,7 +6,7 @@ import sendEmail, {
   findEmailDocument,
   deleteEmailDocument,
 } from '../services/email-verification.service';
-import { BadRequestError } from '../errors/badRequest.error';
+import { BadRequestError } from '@shopproduct/common-module';
 
 export const sendEmailVerificationHandler = async (
   req: Request,
