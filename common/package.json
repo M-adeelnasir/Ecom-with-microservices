@@ -1,6 +1,6 @@
 {
   "name": "@shopproduct/common-module",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "this common module for shopproduct microservices",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

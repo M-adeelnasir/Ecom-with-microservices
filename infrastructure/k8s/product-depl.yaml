@@ -13,11 +13,11 @@ spec:
         app: product
     spec:
       containers:
-        - name: myapp
+        - name: product
           image: raoadeelnasir/product
           env:
             - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/product'
+              value: 'mongodb://product-mongo-srv:27017/product'
 ---
 apiVersion: v1
 kind: Service
