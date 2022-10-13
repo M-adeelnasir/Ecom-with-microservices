@@ -9,6 +9,7 @@ import {
   deleteASession,
 } from '../services/session.service';
 import { jwtSign, jwtRefreshTokenSign } from '../utils/jwt.utils';
+import { sessionCreateEventHandler } from '../services/events.service';
 
 export const sessionCreateleHandler = async (req: Request, res: Response) => {
   //validate user if exits
@@ -35,6 +36,9 @@ export const sessionCreateleHandler = async (req: Request, res: Response) => {
     session,
     config.get('jwt_refresh_token_expired')
   );
+
+  //publish the data to event bus
+  await sessionCreateEventHandler(session._id, session.valid, session.user);
 
   //set the access token in cookie
   res.cookie('accessToken', accessToken, {
