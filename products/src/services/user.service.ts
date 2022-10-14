@@ -1,10 +1,24 @@
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, DocumentDefinition } from 'mongoose';
 import { UserDocument, User } from '../model/user.model';
 import { BadRequestError } from '@shopproduct/common-module';
 import Session, { SessionDocument } from '../model/session.model';
 import { decodeToken, jwtSign } from '../utils/jwt.utils';
 import { get } from 'lodash';
 import config from 'config';
+
+export const signupUser = async (
+  input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt'>>
+) => {
+  try {
+    const user = await User.create(input);
+    return user;
+  } catch (err: any) {
+    if (err.code === 11000) {
+      throw new BadRequestError('Email is already reserved');
+    }
+    throw new Error();
+  }
+};
 
 const getAUser = async (query: string) => {
   try {
