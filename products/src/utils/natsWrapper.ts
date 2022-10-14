@@ -14,7 +14,7 @@ class NatsWrapper {
     this._client = nats.connect(clusterId, clientId, { url });
     return new Promise((reject, resolve) => {
       this._client!.on('connect', () => {
-        log.info('Autentication server is connect to nats server');
+        log.info('Product server is connect to nats server');
         resolve();
       });
       this._client?.on('error', (err) => {

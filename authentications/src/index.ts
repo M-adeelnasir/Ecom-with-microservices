@@ -10,10 +10,10 @@ const HOST = config.get<string>('host');
 
 const server = app.listen(PORT, async () => {
   await connectDB();
+  await natsConnect();
   log.info(
     `Authentication server is listening on port " http://${HOST}/api/v1/products "`
   );
-  await natsConnect();
   swaggerDocs(app);
 });
 
