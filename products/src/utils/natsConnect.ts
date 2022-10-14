@@ -1,3 +1,5 @@
+import { UsercreatedListener } from './../listener/user-ceated.listener';
+import { SessionCreatedListener } from '../listener/session-created.listener';
 import natsWrapper from './natsWrapper';
 
 export const natsConnect = async () => {
@@ -11,11 +13,18 @@ export const natsConnect = async () => {
     if (!process.env.NATS_URL) {
       throw new Error('NATS_URL must be defined');
     }
-    await natsWrapper.connect(
-      process.env.NATS_CLUSTER_ID,
-      process.env.NATS_CLIENT_ID,
-      process.env.NATS_URL
-    );
+    try {
+      await natsWrapper.connect(
+        process.env.NATS_CLUSTER_ID,
+        process.env.NATS_CLIENT_ID,
+        process.env.NATS_URL
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    new SessionCreatedListener(natsWrapper.client).listen();
+    new UsercreatedListener(natsWrapper.client).listen();
 
     natsWrapper.client.on('close', () => {
       console.log('Nats connection closed');

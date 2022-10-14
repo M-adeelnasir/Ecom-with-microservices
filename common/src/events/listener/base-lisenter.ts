@@ -1,34 +1,36 @@
 import { Subject } from '../subjects';
 import { Stan, Message } from 'node-nats-streaming';
 
-interface event {
+interface Event {
   subject: Subject;
   data: any;
 }
 
-export abstract class Listener<T extends event> {
+export abstract class Listener<T extends Event> {
   abstract subject: T['subject'];
   abstract queueGroupName: string;
+  abstract OnMessage(data: T['data'], msg: Message): void;
   protected client: Stan;
-  protected ackMode = 5 * 1000;
-  abstract onMessage(data: T['data'], msg: Message): void;
-
+  protected ackWait = 5 * 1000;
   constructor(client: Stan) {
     this.client = client;
   }
 
   listen() {
-    const subsciption = this.client.subscribe(
+    const subscription = this.client.subscribe(
       this.subject,
       this.queueGroupName,
       this.subscriptionOptions()
     );
 
-    subsciption.on('message', (msg: Message) => {
+    subscription.on('message', (msg: Message) => {
       console.log(
         `Message recived From ${this.subject} / ${this.queueGroupName}`
       );
+
       const parsedData = this.parsedData(msg);
+
+      this.OnMessage(parsedData, msg);
     });
   }
 
@@ -45,7 +47,7 @@ export abstract class Listener<T extends event> {
       .subscriptionOptions()
       .setDeliverAllAvailable()
       .setManualAckMode(true)
-      .setAckWait(this.ackMode)
+      .setAckWait(this.ackWait)
       .setDurableName(this.queueGroupName);
   }
 }

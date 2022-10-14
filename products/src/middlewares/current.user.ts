@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
-import { findUserByEmail } from '../services/user.service';
+import { findUserByEmail } from '../services/auth.service';
 import { UnAuthorizedError } from '@shopproduct/common-module';
 
 export const requireUserSignIn = async (

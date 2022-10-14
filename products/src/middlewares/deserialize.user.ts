@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
 import { decodeToken } from '../utils/jwt.utils';
-import { reIssueAccessToken } from './../services/user.service';
+import { reIssueAccessToken } from '../services/auth.service';
 
 declare global {
   namespace Express {

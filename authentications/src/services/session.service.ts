@@ -11,7 +11,7 @@ export const createSession = async (userId: string, userAgent: string) => {
   return session;
 };
 
-//get all session
+// get all session
 export const getAllSessionsOfUser = async (
   userId: FilterQuery<SessionDocument['user']>
 ) => {
