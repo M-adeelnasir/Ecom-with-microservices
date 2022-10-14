@@ -15,7 +15,7 @@ class NatsWrapper {
     return new Promise((reject, resolve) => {
       this._client!.on('connect', () => {
         console.log('Autentication server is connect to nats server');
-        return resolve();
+        resolve();
       });
       this._client?.on('error', (err) => {
         reject(err);
