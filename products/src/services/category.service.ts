@@ -1,5 +1,5 @@
 import Category, { CategoryDocument } from '../model/category.model';
-import { DocumentDefinition, FilterQuery } from 'mongoose';
+import { DocumentDefinition, FilterQuery, QueryOptions } from 'mongoose';
 import { BadRequestError } from '@shopproduct/common-module';
 import slugify from 'slugify';
 
@@ -18,7 +18,7 @@ export const createCategory = async (
 export const findCategoryWithSlug = async (
   slug: FilterQuery<CategoryDocument['slug']>
 ) => {
-  const subCategory = await Category.findOne({ slug });
+  const subCategory = await Category.findOne({ slug }).lean();
 
   if (!subCategory) {
     throw new BadRequestError('No category found!');
@@ -30,7 +30,7 @@ export const findCategoryWithSlug = async (
 export const deleteCategoryWithSlug = async (
   slug: FilterQuery<CategoryDocument['slug']>
 ) => {
-  await Category.findOneAndDelete({ slug });
+  return await Category.findOneAndDelete({ slug });
 };
 
 //update category with using slug
@@ -43,15 +43,16 @@ export const updateCategoryWithSlug = async (
     { slug },
     { name, slug: newSlug },
     { new: true, runValidators: true }
-  );
+  ).lean();
 
   if (!subCategory) {
     throw new Error('Category update failed');
   }
+  return subCategory;
 };
 
 //get all cayegories
 export const getAllCategories = async () => {
-  const subCategory = await Category.find({});
+  const subCategory = await Category.find({}).lean();
   return subCategory;
 };
