@@ -33,6 +33,8 @@ const categorySchema = new mongoose.Schema(
   }
 );
 
+categorySchema.set('autoIndex', false);
+
 categorySchema.pre('save', function (done) {
   const cat = this as CategoryDocument;
   const slug = slugify(cat.name, { lower: true });

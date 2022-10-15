@@ -33,6 +33,9 @@ const subCategorySchema = new mongoose.Schema(
   }
 );
 
+// subCategorySchema.index({ slug: 1 });
+subCategorySchema.set('autoIndex', false);
+
 subCategorySchema.pre('save', async function (done) {
   const subCat = this as SubCategoryDocument;
   const slug = slugify(subCat.name, { lower: true });

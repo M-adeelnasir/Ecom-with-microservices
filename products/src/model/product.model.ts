@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 export interface ProductDocument extends mongoose.Document {
   title: string;
@@ -15,8 +16,8 @@ export interface ProductDocument extends mongoose.Document {
   ratings: Array<object>;
   tags: Array<string>;
   warranty: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 const productSchema = new mongoose.Schema(
@@ -33,6 +34,7 @@ const productSchema = new mongoose.Schema(
       required: true,
       text: true,
       unique: true,
+      index: true,
     },
 
     description: {
@@ -116,6 +118,15 @@ const productSchema = new mongoose.Schema(
     },
   }
 );
+
+productSchema.set('autoIndex', false);
+
+productSchema.pre('save', async function (done) {
+  const product = this as ProductDocument;
+  const slug = slugify(product.title, { lower: true });
+  product.slug = slug;
+  done();
+});
 
 const Product = mongoose.model<ProductDocument>('Product', productSchema);
 
