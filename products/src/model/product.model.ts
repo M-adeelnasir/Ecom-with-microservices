@@ -15,6 +15,8 @@ export interface ProductDocument extends mongoose.Document {
   ratings: Array<object>;
   tags: Array<string>;
   warranty: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const productSchema = new mongoose.Schema(

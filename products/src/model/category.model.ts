@@ -4,6 +4,8 @@ import slugify from 'slugify';
 export interface CategoryDocument extends mongoose.Document {
   name: string;
   slug: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const categorySchema = new mongoose.Schema(
