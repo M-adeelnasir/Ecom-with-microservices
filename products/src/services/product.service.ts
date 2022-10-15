@@ -1,5 +1,10 @@
 import Product, { ProductDocument } from './../model/product.model';
-import { DocumentDefinition, FilterQuery, UpdateQuery } from 'mongoose';
+import {
+  DocumentDefinition,
+  FilterQuery,
+  UpdateQuery,
+  RootQuerySelector,
+} from 'mongoose';
 
 //create product
 export const createProduct = async (
@@ -13,9 +18,7 @@ export const createProduct = async (
 };
 
 //find a product
-export const findProductBySlug = async (
-  slug: FilterQuery<ProductDocument['slug']>
-) => {
+export const findProductBySlug = async (slug: ProductDocument['slug']) => {
   const product = await Product.findOne({ slug });
   if (!product) {
     throw new Error('Something wrong! product create failed');

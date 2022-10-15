@@ -15,9 +15,7 @@ export const createCategory = async (
 };
 
 //find category with using slug
-export const findCategoryWithSlug = async (
-  slug: FilterQuery<CategoryDocument['slug']>
-) => {
+export const findCategoryWithSlug = async (slug: CategoryDocument['slug']) => {
   const subCategory = await Category.findOne({ slug }).lean();
 
   if (!subCategory) {
