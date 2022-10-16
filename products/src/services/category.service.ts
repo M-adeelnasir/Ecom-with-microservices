@@ -7,21 +7,28 @@ import slugify from 'slugify';
 export const createCategory = async (
   input: DocumentDefinition<Omit<CategoryDocument, 'createdAt,updateAt'>>
 ) => {
-  const subCategory = await Category.create(input);
-  if (!subCategory) {
+  try {
+    const category = await Category.create(input);
+    if (!category) {
+      throw new Error('Category create failed');
+    }
+    return category;
+  } catch (err: any) {
+    if (err.code === 11000) {
+      throw new BadRequestError('Category Already exits with this name');
+    }
     throw new Error('Category create failed');
   }
-  return subCategory;
 };
 
 //find category with using slug
 export const findCategoryWithSlug = async (slug: CategoryDocument['slug']) => {
-  const subCategory = await Category.findOne({ slug }).lean();
+  const category = await Category.findOne({ slug }).lean();
 
-  if (!subCategory) {
+  if (!category) {
     throw new BadRequestError('No category found!');
   }
-  return subCategory;
+  return category;
 };
 
 //delete category with using slug
@@ -37,20 +44,20 @@ export const updateCategoryWithSlug = async (
   name: string
 ) => {
   const newSlug = slugify(name);
-  const subCategory = await Category.findOneAndUpdate(
+  const category = await Category.findOneAndUpdate(
     { slug },
     { name, slug: newSlug },
     { new: true, runValidators: true }
   ).lean();
 
-  if (!subCategory) {
+  if (!category) {
     throw new Error('Category update failed');
   }
-  return subCategory;
+  return category;
 };
 
 //get all cayegories
 export const getAllCategories = async () => {
-  const subCategory = await Category.find({}).lean();
-  return subCategory;
+  const category = await Category.find({}).lean();
+  return category;
 };
