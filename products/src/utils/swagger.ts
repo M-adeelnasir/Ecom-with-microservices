@@ -42,17 +42,17 @@ const openapiSpecification = swaggerJsDoc(options);
 
 function swaggerDocs(app: Express) {
   app.use(
-    '/api/v1/users/auth-api-docs',
+    '/api/v1/products/product-api-docs',
     swaggerUi.serve,
     swaggerUi.setup(openapiSpecification)
   );
 
-  app.get('/api/v1/users/docs.json', (req: Request, res: Response) => {
+  app.get('/api/v1/products/docs.json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(openapiSpecification);
   });
   log.info(
-    `Authentication API Docs are available at " http://${HOST}/api/v1/users/auth-api-docs "`
+    `Authentication API Docs are available at " http://${HOST}/api/v1/products/product-api-docs "`
   );
 }
 
