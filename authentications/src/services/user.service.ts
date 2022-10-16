@@ -32,7 +32,7 @@ export const findUserByEmail = async (
 ) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new BadRequestError('Invalid Creadentials');
+    throw new BadRequestError('Invalid Credentials');
   }
   return user;
 };

@@ -15,6 +15,7 @@ const categorySchema = new mongoose.Schema(
       trim: true,
       minlength: [2, 'Too short'],
       maxlength: [32, 'Too long'],
+      unique: true,
     },
     slug: {
       type: String,
@@ -34,6 +35,7 @@ const categorySchema = new mongoose.Schema(
 );
 
 categorySchema.set('autoIndex', false);
+categorySchema.index({ slug: 1 });
 
 categorySchema.pre('save', function (done) {
   const cat = this as CategoryDocument;

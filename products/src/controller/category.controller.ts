@@ -9,29 +9,29 @@ import {
 } from '../services/category.service';
 
 export const createCategoryHandler = async (req: Request, res: Response) => {
-  const product = await createCategory(req.body);
-  res.status(201).json({ product });
+  const category = await createCategory(req.body);
+  res.status(201).json({ category });
 };
 
-export const findProductHandler = async (req: Request, res: Response) => {
+export const findCategoryHandler = async (req: Request, res: Response) => {
   const slug = get(req.params, 'slug');
-  const product = await findCategoryWithSlug(slug);
-  res.json({ product });
+  const category = await findCategoryWithSlug(slug);
+  res.json({ category });
 };
 
-export const deleteProductHandler = async (req: Request, res: Response) => {
+export const deleteCategoryHandler = async (req: Request, res: Response) => {
   const slug = get(req.body, 'slug');
   await deleteCategoryWithSlug(slug);
   res.status(204).json({ msg: 'Product Deleted' });
 };
 
-export const getAllProductHandler = async (req: Request, res: Response) => {
-  const products = await getAllCategories();
-  res.json({ products });
+export const getAllCategoryHandler = async (req: Request, res: Response) => {
+  const categorys = await getAllCategories();
+  res.json({ categorys });
 };
 
-export const updateProductHandler = async (req: Request, res: Response) => {
+export const updateCategoryHandler = async (req: Request, res: Response) => {
   const slug = get(req.body, 'slug');
-  const product = await updateCategoryWithSlug(slug, req.body);
-  res.json({ product });
+  const category = await updateCategoryWithSlug(slug, req.body);
+  res.json({ category });
 };
