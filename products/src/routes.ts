@@ -41,8 +41,203 @@ export default function (app: Express) {
    * /api/v1/products/category:
    *  post:
    *     tags:
-   *       - Create new Category
+   *       - Category
    *     summary: Create a new category for product
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - name
+   *             properties:
+   *               name:
+   *                   type: string
+   *     responses:
+   *        '201':
+   *          description: Success
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  _id:
+   *                      type: string
+   *                  name:
+   *                      type: string
+   *                  slug:
+   *                      type: string
+   *                  createdAt:
+   *                      type: string
+   *                  updateAt:
+   *                      type: string
+   *        '400':
+   *          description: Bad Request
+   *        '409':
+   *          description: Conflict
+   *        '403':
+   *          description: Forbiden
+   *        '401':
+   *          description: Not Authorized (require Signin as admin)
+   */
+  app.post(
+    baseURI + '/category',
+    [deserializeUser, requireAdminSignin, validateRequest(categorySchema)],
+    createCategoryHandler
+  );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/products/category/{slug}:
+   *     get:
+   *      tags:
+   *        - Category
+   *      summary: get a category by slug
+   *      parameters:
+   *        - in: path
+   *          name: slug
+   *          schema:
+   *            type: string
+   *          required: true
+   *          description: category slug to get a specfic category
+   *      responses:
+   *         '200':
+   *           description: Success
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   _id:
+   *                       type: string
+   *                   name:
+   *                       type: string
+   *                   slug:
+   *                       type: string
+   *                   createdAt:
+   *                       type: string
+   *                   updatedAt:
+   *                       type: string
+   *         '400':
+   *           description: Bad Request
+   *         '401':
+   *           description: Not Authorized (require Signin as admin)
+   *         '409':
+   *           description: Conflict
+   */
+  app.get(
+    baseURI + '/category/:slug',
+    [deserializeUser, validateRequest(findCategory)],
+    findCategoryHandler
+  );
+
+  /**
+   * @openapi
+   * /api/products/categories:
+   *  get:
+   *    tags:
+   *      - Category
+   *    summary: Get all Categories
+   *    responses:
+   *      '200':
+   *        description: Success
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: array
+   *              items:
+   *                type: object
+   *                required:
+   *                  - _id
+   *                  - name
+   *                  - slug
+   *                  - createtAt
+   *                  - updatedtAt
+   *                properties:
+   *                  _id:
+   *                       type: string
+   *                  name:
+   *                       type: string
+   *                  slug:
+   *                       type: string
+   *                  createdAt:
+   *                       type: Date
+   *                  updatedAt:
+   *                       type: Date
+   */
+
+  app.get(
+    baseURI + '/categories',
+    [deserializeUser, validateRequest(findCategory)],
+    getAllCategoryHandler
+  );
+
+  /**
+   * @openapi
+   * security:
+   *   - bearerAuth: []
+   * paths:
+   *   /api/v1/products/category/{slug}:
+   *     get:
+   *      tags:
+   *        - Category
+   *      summary: get a category by slug
+   *      parameters:
+   *        - in: path
+   *          name: slug
+   *          schema:
+   *            type: string
+   *          required: true
+   *          description: category slug to get a specfic category
+   *      responses:
+   *         '204':
+   *           description: Success
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   _id:
+   *                       type: string
+   *                   name:
+   *                       type: string
+   *                   slug:
+   *                       type: string
+   *                   createdAt:
+   *                       type: string
+   *                   updatedAt:
+   *                       type: string
+   *         '400':
+   *           description: Bad Request
+   *         '401':
+   *           description: Not Authorized (require Signin as admin)
+   *         '409':
+   *           description: Conflict
+   */
+
+  app.delete(
+    baseURI + '/category/slug',
+    [deserializeUser, requireAdminSignin, validateRequest(findCategory)],
+    deleteCategoryHandler
+  );
+
+  /**
+   * @openapi
+   * /api/v1/products/category/{slug}:
+   *  put:
+   *     tags:
+   *       - Category
+   *     summary: Create a new category for product
+   *      parameters:
+   *        - in: path
+   *          name: slug
+   *          schema:
+   *            type: string
+   *          required: true
+   *          description: category slug to get a specfic category
    *     requestBody:
    *       content:
    *         application/json:
@@ -76,82 +271,14 @@ export default function (app: Express) {
    *        '409':
    *          description: Conflict
    *        '403':
-   *          description: Forbiden (require Signin as admin)
+   *          description: Forbiden
+   *        '401':
+   *          description: Not Authorized (require Signin as admin)
    */
-  app.post(
-    baseURI + '/category',
-    validateRequest(categorySchema),
-    deserializeUser,
-    requireAdminSignin,
-    createCategoryHandler
-  );
 
-  /**
-   * @openapi
-   * security:
-   *   - bearerAuth: []
-   * paths:
-   *   /api/v1/products/category/{slug}:
-   *     get:
-   *      tags:
-   *        - get a category
-   *      summary: get a category by slug
-   *      parameters:
-   *        - in: path
-   *          name: slug
-   *          schema:
-   *            type: string
-   *          required: true
-   *          description: category slug to get a specfic category
-   *      responses:
-   *         '200':
-   *           description: Success
-   *           content:
-   *             application/json:
-   *               schema:
-   *                 type: object
-   *                 properties:
-   *                   _id:
-   *                       type: string
-   *                   name:
-   *                       type: string
-   *                   slug:
-   *                       type: string
-   *                   createdAt:
-   *                       type: string
-   *                   updatedAt:
-   *                       type: string
-   *         '400':
-   *          description: Bad Request
-   *         '409':
-   *           description: Conflict
-   */
-  app.get(
-    baseURI + '/category/:slug',
-    validateRequest(findCategory),
-    deserializeUser,
-    findCategoryHandler
-  );
-
-  app.get(
-    baseURI + '/categories',
-    validateRequest(findCategory),
-    deserializeUser,
-    getAllCategoryHandler
-  );
-
-  app.delete(
-    baseURI + '/category/slug',
-    validateRequest(findCategory),
-    deserializeUser,
-    requireAdminSignin,
-    deleteCategoryHandler
-  );
   app.put(
     baseURI + '/category/slug',
-    validateRequest(findCategory),
-    deserializeUser,
-    requireAdminSignin,
+    [deserializeUser, requireAdminSignin, validateRequest(findCategory)],
     updateCategoryHandler
   );
 }
