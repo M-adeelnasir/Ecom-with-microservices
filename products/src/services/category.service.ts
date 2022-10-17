@@ -1,5 +1,5 @@
 import Category, { CategoryDocument } from '../model/category.model';
-import { DocumentDefinition, FilterQuery, QueryOptions } from 'mongoose';
+import { DocumentDefinition, FilterQuery } from 'mongoose';
 import { BadRequestError } from '@shopproduct/common-module';
 import slugify from 'slugify';
 
@@ -33,14 +33,14 @@ export const findCategoryWithSlug = async (slug: CategoryDocument['slug']) => {
 
 //delete category with using slug
 export const deleteCategoryWithSlug = async (
-  slug: FilterQuery<CategoryDocument['slug']>
+  slug: CategoryDocument['slug']
 ) => {
   return await Category.findOneAndDelete({ slug });
 };
 
 //update category with using slug
 export const updateCategoryWithSlug = async (
-  slug: FilterQuery<CategoryDocument['slug']>,
+  slug: CategoryDocument['slug'],
   name: string
 ) => {
   const newSlug = slugify(name);

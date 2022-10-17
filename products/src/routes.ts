@@ -132,4 +132,26 @@ export default function (app: Express) {
     deserializeUser,
     findCategoryHandler
   );
+
+  app.get(
+    baseURI + '/categories',
+    validateRequest(findCategory),
+    deserializeUser,
+    getAllCategoryHandler
+  );
+
+  app.delete(
+    baseURI + '/category/slug',
+    validateRequest(findCategory),
+    deserializeUser,
+    requireAdminSignin,
+    deleteCategoryHandler
+  );
+  app.put(
+    baseURI + '/category/slug',
+    validateRequest(findCategory),
+    deserializeUser,
+    requireAdminSignin,
+    updateCategoryHandler
+  );
 }

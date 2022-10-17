@@ -20,7 +20,7 @@ export const findCategoryHandler = async (req: Request, res: Response) => {
 };
 
 export const deleteCategoryHandler = async (req: Request, res: Response) => {
-  const slug = get(req.body, 'slug');
+  const slug = get(req.params, 'slug');
   await deleteCategoryWithSlug(slug);
   res.status(204).json({ msg: 'Product Deleted' });
 };
@@ -31,7 +31,7 @@ export const getAllCategoryHandler = async (req: Request, res: Response) => {
 };
 
 export const updateCategoryHandler = async (req: Request, res: Response) => {
-  const slug = get(req.body, 'slug');
+  const slug = get(req.params, 'slug');
   const category = await updateCategoryWithSlug(slug, req.body);
   res.json({ category });
 };
